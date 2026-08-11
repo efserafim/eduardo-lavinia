@@ -67,7 +67,7 @@ export function SiteFooter() {
           Nossos pais
         </p>
         <p className="mt-2.5 text-sm font-light leading-relaxed text-ink-soft">
-          Que nos ensinaram o amor e nos acompanham, com oração, neste novo lar.
+          Em cujo amor aprendemos a amar — e sob cuja oração damos início à nossa casa.
         </p>
       </div>
 
