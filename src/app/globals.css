@@ -135,22 +135,61 @@ body {
   );
 }
 
+/* Divisor horizontal alinhado entre seções */
+.section-rule {
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  z-index: 1;
+  width: min(100% - 3rem, 64rem);
+  max-width: 64rem;
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(92, 36, 52, 0.08) 12%,
+    rgba(92, 36, 52, 0.22) 50%,
+    rgba(92, 36, 52, 0.08) 88%,
+    transparent 100%
+  );
+}
+
+.section-pad {
+  position: relative;
+  padding-inline: 1.5rem;
+  padding-block: 5.5rem;
+}
+
+@media (min-width: 768px) {
+  .section-pad {
+    padding-block: 7rem;
+  }
+}
+
 .ornament {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.85rem;
+  width: 100%;
+  max-width: 16rem;
+  margin-inline: auto;
   color: var(--marsala);
   opacity: 0.55;
 }
 
 .ornament-line {
+  flex: 1 1 auto;
   height: 1px;
-  width: 3.5rem;
+  min-width: 2.5rem;
+  max-width: 5.5rem;
   background: linear-gradient(90deg, transparent, var(--marsala-mid), transparent);
 }
 
 .ornament-diamond {
+  flex: 0 0 auto;
   width: 5px;
   height: 5px;
   rotate: 45deg;

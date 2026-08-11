@@ -65,8 +65,8 @@ export function GiftList({ items }: { items: GiftItem[] }) {
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
-    <section id="presentes" className="relative px-6 py-20 md:py-28">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-marsala/15 to-transparent" />
+    <section id="presentes" className="section-pad">
+      <div className="section-rule" aria-hidden />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(240,228,230,0.35),transparent_55%)]" />
 
       <div className="relative mx-auto max-w-5xl">
@@ -135,20 +135,25 @@ export function GiftList({ items }: { items: GiftItem[] }) {
                 </div>
 
                 <div className="flex flex-1 flex-col p-4">
-                  <h3 className="font-display text-xl leading-snug text-marsala">
+                  <h3 className="font-display line-clamp-2 min-h-[2.6em] text-xl leading-snug text-marsala">
                     {item.name}
                   </h3>
 
                   <div className="mt-3">
-                    <div className="relative h-px w-full bg-marsala/12">
+                    <div className="relative h-px w-full overflow-hidden bg-marsala/12">
                       <div
                         className="absolute inset-y-0 left-0 bg-marsala/65"
-                        style={{ width: `${item.percentRaised}%` }}
+                        style={{
+                          width: `${Math.max(
+                            item.percentRaised,
+                            item.percentRaised > 0 ? 1 : 0
+                          )}%`,
+                        }}
                       />
                     </div>
-                    <div className="mt-1.5 flex justify-between font-display text-sm text-ink-faint">
-                      <span>{formatBRL(item.raisedCents)}</span>
-                      <span>meta {formatBRL(item.targetAmount)}</span>
+                    <div className="mt-1.5 flex justify-between gap-2 font-display text-sm text-ink-faint">
+                      <span className="truncate">{formatBRL(item.raisedCents)}</span>
+                      <span className="shrink-0">meta {formatBRL(item.targetAmount)}</span>
                     </div>
                   </div>
 

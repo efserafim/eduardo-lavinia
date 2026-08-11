@@ -17,8 +17,8 @@ export function Gallery({ photos }: { photos: Photo[] }) {
         ];
 
   return (
-    <section id="galeria" className="relative px-6 py-24 md:py-32">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-marsala/15 to-transparent" />
+    <section id="galeria" className="section-pad">
+      <div className="section-rule" aria-hidden />
 
       <div className="mx-auto max-w-5xl">
         <div className="animate-fade-up flex flex-col items-center text-center">
