@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 const patrons = [
@@ -39,16 +38,14 @@ export function SiteFooter() {
                 className="pointer-events-none absolute inset-4 -z-10 rounded-full bg-[radial-gradient(circle,rgba(201,137,151,0.18),transparent_70%)] blur-md"
                 aria-hidden
               />
-              <Image
-                src={patron.src}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`${patron.src}?v=3`}
                 alt={patron.alt}
-                width={patron.wide ? 360 : 280}
-                height={360}
-                unoptimized
-                className={`mx-auto h-auto bg-transparent opacity-95 ${
+                className={`mx-auto h-auto w-auto bg-transparent object-contain ${
                   patron.wide
-                    ? "w-[8.5rem] md:w-[10rem]"
-                    : "w-[5.75rem] md:w-[6.75rem]"
+                    ? "max-h-[9.5rem] md:max-h-[11rem]"
+                    : "max-h-[8.5rem] md:max-h-[10rem]"
                 }`}
               />
             </div>
