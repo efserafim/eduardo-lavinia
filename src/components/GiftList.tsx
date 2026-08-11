@@ -63,7 +63,10 @@ export function GiftList({ items }: { items: GiftItem[] }) {
 
   return (
     <section id="presentes" className="section-pad">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(240,228,230,0.28),transparent_55%)]" />
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[70%] bg-[radial-gradient(ellipse_at_top,rgba(240,228,230,0.2),transparent_72%)]"
+        aria-hidden
+      />
 
       <div className="relative mx-auto max-w-6xl">
         <div className="animate-fade-up mx-auto flex max-w-2xl flex-col items-center text-center">

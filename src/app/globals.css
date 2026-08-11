@@ -109,11 +109,9 @@ body {
 .paper-bg {
   background-color: var(--pearl);
   background-image:
-    radial-gradient(ellipse 90% 50% at 50% -8%, rgba(226, 180, 188, 0.22), transparent 62%),
-    radial-gradient(ellipse 45% 35% at 0% 40%, rgba(138, 154, 123, 0.08), transparent 58%),
-    radial-gradient(ellipse 40% 30% at 100% 55%, rgba(138, 167, 181, 0.09), transparent 55%),
-    radial-gradient(ellipse 70% 40% at 50% 100%, rgba(92, 36, 52, 0.04), transparent 58%),
-    linear-gradient(180deg, #faf6f1 0%, #f7f1ea 55%, #f4ece4 100%);
+    radial-gradient(ellipse 90% 45% at 50% -8%, rgba(226, 180, 188, 0.18), transparent 65%),
+    radial-gradient(ellipse 45% 35% at 0% 40%, rgba(138, 154, 123, 0.06), transparent 60%),
+    radial-gradient(ellipse 40% 30% at 100% 55%, rgba(138, 167, 181, 0.07), transparent 58%);
 }
 
 .font-display {
