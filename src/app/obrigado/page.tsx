@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { FiligreeCorner, FloralWash, Ornament } from "@/components/Ornament";
 import { prisma } from "@/lib/db";
@@ -5,6 +6,12 @@ import { formatBRL } from "@/lib/money";
 import { checkInfinitePayPayment } from "@/lib/infinitepay";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Obrigado",
+  description: "Recebemos o seu carinho. Obrigado por celebrar conosco.",
+  robots: { index: false, follow: false },
+};
 
 export default async function ObrigadoPage({
   searchParams,
