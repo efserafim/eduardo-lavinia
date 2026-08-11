@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Ornament } from "@/components/Ornament";
 
 const patrons = [
   {
@@ -24,72 +25,68 @@ const patrons = [
 
 export function SiteFooter() {
   return (
-    <footer className="section-pad !pb-12 !pt-10 flex flex-col items-center text-center">
-      <p className="eyebrow !text-[0.58rem] !tracking-[0.32em] text-sky-soft/90">
-        Sob a proteção de
-      </p>
+    <footer className="section-pad !pb-12 flex flex-col items-center text-center">
+      <div className="animate-fade-up flex flex-col items-center">
+        <p className="eyebrow">Sob a proteção de</p>
+        <Ornament className="mt-4" />
+      </div>
 
-      <div className="mt-7 flex flex-wrap items-end justify-center gap-10 md:gap-14">
-        {patrons.map((patron) => (
-          <div
+      <div className="mt-10 flex flex-wrap items-end justify-center gap-8 md:mt-12 md:gap-12">
+        {patrons.map((patron, index) => (
+          <figure
             key={patron.src}
-            className="animate-fade-up flex max-w-[9.5rem] flex-col items-center md:max-w-[11rem]"
+            className="animate-fade-up flex max-w-[10.5rem] flex-col items-center md:max-w-[12rem]"
+            style={{ animationDelay: `${0.1 * index}s` }}
           >
-            <div className="relative mb-3.5">
+            <div className="relative mb-3">
               <div
-                className="pointer-events-none absolute inset-6 -z-10 rounded-full bg-[radial-gradient(circle,rgba(201,137,151,0.12),transparent_72%)] blur-lg"
+                className="pointer-events-none absolute inset-5 -z-10 rounded-full bg-[radial-gradient(circle,rgba(201,137,151,0.16),transparent_70%)] blur-md"
                 aria-hidden
               />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={`${patron.src}?v=3`}
                 alt={patron.alt}
-                className={`mx-auto h-auto w-auto bg-transparent object-contain opacity-[0.92] ${
+                className={`mx-auto h-auto w-auto bg-transparent object-contain ${
                   patron.wide
-                    ? "max-h-[7.25rem] md:max-h-[8.5rem]"
-                    : "max-h-[6.75rem] md:max-h-[8rem]"
+                    ? "max-h-[8rem] md:max-h-[9.25rem]"
+                    : "max-h-[7.5rem] md:max-h-[8.75rem]"
                 }`}
               />
             </div>
-            <p className="font-display text-[0.82rem] font-normal tracking-[0.06em] text-marsala/80 md:text-[0.9rem]">
+            <figcaption className="font-display text-[0.95rem] italic leading-snug text-marsala-mid md:text-base">
               {patron.name}
-            </p>
+            </figcaption>
             {"subtitle" in patron && patron.subtitle ? (
-              <p className="mt-1.5 text-[0.58rem] font-light tracking-[0.18em] text-ink-faint/80 uppercase">
+              <p className="mt-1 text-[0.65rem] tracking-[0.14em] text-ink-faint uppercase">
                 {patron.subtitle}
               </p>
             ) : null}
-          </div>
+          </figure>
         ))}
       </div>
 
-      <div
-        className="mt-11 h-px w-16 bg-gradient-to-r from-transparent via-rose-petal/35 to-transparent"
-        aria-hidden
-      />
+      <Ornament className="mt-12" />
 
-      <div className="mt-8 max-w-sm">
-        <p className="eyebrow !text-[0.58rem] !tracking-[0.32em] text-sky-soft/90">
-          Com a bênção de
-        </p>
-        <p className="font-display mt-2.5 text-lg font-normal tracking-[0.06em] text-marsala/85 md:text-xl">
+      <div className="animate-fade-up mt-8 max-w-md">
+        <p className="eyebrow">Com a bênção de</p>
+        <p className="section-title !mt-2 !text-[1.65rem] md:!text-[1.9rem]">
           Nossos pais
         </p>
-        <p className="mt-3 text-[0.88rem] font-light leading-[1.65] text-ink-soft/90">
+        <p className="section-lead !mt-3">
           Em cujo amor aprendemos a amar, e sob cuja oração damos início à nossa
           casa.
         </p>
       </div>
 
-      <p className="script-title mt-9 text-[2rem] md:text-[2.25rem]">
-        Eduardo &amp; Lavínia
-      </p>
-      <p className="mt-2.5 max-w-xs text-[0.88rem] font-light leading-relaxed text-ink-soft/85">
+      <p className="script-title mt-10">Eduardo &amp; Lavínia</p>
+      <p className="section-lead mt-3 !max-w-sm">
         Com carinho, celebramos o início da nossa casa.
       </p>
+
       <Link
         href="/admin"
-        className="mt-7 font-display text-xs tracking-[0.12em] text-ink-faint/55 transition hover:text-marsala/80"
+        className="mt-8 font-display text-sm tracking-[0.06em] text-ink-faint/70 transition hover:text-marsala"
       >
         Área do casal
       </Link>
