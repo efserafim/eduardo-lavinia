@@ -6,11 +6,20 @@ const patrons = [
     src: "/nossa-senhora-fatima.png",
     alt: "Nossa Senhora de Fátima",
     name: "Nossa Senhora de Fátima",
+    wide: false,
   },
   {
     src: "/santa-teresinha.png",
     alt: "Santa Teresinha do Menino Jesus",
     name: "Santa Teresinha",
+    wide: false,
+  },
+  {
+    src: "/sao-luis-santa-zelia.png",
+    alt: "São Luís Martin e Santa Zélia Martin",
+    name: "São Luís & Santa Zélia",
+    subtitle: "Pais de Santa Teresinha",
+    wide: true,
   },
 ] as const;
 
@@ -19,9 +28,12 @@ export function SiteFooter() {
     <footer className="section-pad !pb-12 !pt-8 flex flex-col items-center text-center">
       <p className="eyebrow !text-[0.62rem]">Sob a proteção de</p>
 
-      <div className="mt-5 flex flex-wrap items-end justify-center gap-8 md:gap-12">
+      <div className="mt-5 flex flex-wrap items-end justify-center gap-8 md:gap-10">
         {patrons.map((patron) => (
-          <div key={patron.src} className="animate-fade-up flex flex-col items-center">
+          <div
+            key={patron.src}
+            className="animate-fade-up flex max-w-[11rem] flex-col items-center md:max-w-[13rem]"
+          >
             <div className="relative mb-3">
               <div
                 className="pointer-events-none absolute inset-4 -z-10 rounded-full bg-[radial-gradient(circle,rgba(201,137,151,0.18),transparent_70%)] blur-md"
@@ -30,29 +42,28 @@ export function SiteFooter() {
               <Image
                 src={patron.src}
                 alt={patron.alt}
-                width={280}
+                width={patron.wide ? 360 : 280}
                 height={360}
-                className="mx-auto h-auto w-[5.75rem] opacity-95 md:w-[6.75rem]"
+                className={`mx-auto h-auto opacity-95 ${
+                  patron.wide
+                    ? "w-[8.5rem] md:w-[10rem]"
+                    : "w-[5.75rem] md:w-[6.75rem]"
+                }`}
               />
             </div>
             <p className="font-display text-[0.95rem] tracking-[0.04em] text-marsala md:text-base">
               {patron.name}
             </p>
+            {"subtitle" in patron && patron.subtitle ? (
+              <p className="mt-1 text-[0.7rem] tracking-[0.06em] text-ink-faint uppercase">
+                {patron.subtitle}
+              </p>
+            ) : null}
           </div>
         ))}
       </div>
 
-      <div className="mt-10 max-w-md">
-        <p className="eyebrow !text-[0.62rem]">Com a bênção de</p>
-        <p className="font-display mt-2 text-base tracking-[0.03em] text-marsala-mid md:text-lg">
-          Nossos pais
-        </p>
-        <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-          Que com amor e oração nos acompanham neste início de lar.
-        </p>
-      </div>
-
-      <p className="script-title mt-8 text-[2.15rem] md:text-[2.4rem]">
+      <p className="script-title mt-10 text-[2.15rem] md:text-[2.4rem]">
         Eduardo &amp; Lavínia
       </p>
       <p className="mt-3 max-w-sm text-sm leading-relaxed text-ink-soft">
