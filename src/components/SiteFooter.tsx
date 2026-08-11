@@ -67,7 +67,8 @@ export function SiteFooter() {
           Nossos pais
         </p>
         <p className="mt-2.5 text-sm font-light leading-relaxed text-ink-soft">
-          Em cujo amor aprendemos a amar — e sob cuja oração damos início à nossa casa.
+          Em cujo amor aprendemos a amar, e sob cuja oração damos início à nossa
+          casa.
         </p>
       </div>
 
