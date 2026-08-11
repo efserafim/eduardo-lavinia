@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+  <!-- stem -->
+  <path d="M32 58V34" stroke="#5c2434" stroke-width="1.6" stroke-linecap="round" opacity="0.55"/>
+  <path d="M32 46c-6-2-9 2-10 6" stroke="#8a9a7b" stroke-width="1.4" stroke-linecap="round" opacity="0.7"/>
+  <path d="M26 50c2-1 4 0 5 2" stroke="#8a9a7b" stroke-width="1.2" stroke-linecap="round" opacity="0.55"/>
+  <!-- rose bloom -->
+  <ellipse cx="32" cy="24" rx="11" ry="13" fill="#7a3a4a" opacity="0.9"/>
+  <path d="M32 14c4 3 7 7 7 12 0 6-3 10-7 12-4-2-7-6-7-12 0-5 3-9 7-12z" fill="#5c2434"/>
+  <path d="M32 18c2.5 2 4.5 4.5 4.5 8S34.5 32 32 34c-2.5-2-4.5-4.5-4.5-8S29.5 20 32 18z" fill="#c98997" opacity="0.85"/>
+  <path d="M32 21c1.4 1.2 2.4 2.6 2.4 4.4S33.4 29 32 30c-1.4-1-2.4-2.4-2.4-4.2S30.6 22.2 32 21z" fill="#f0e4e6"/>
+  <circle cx="32" cy="25" r="1.6" fill="#b8956c" opacity="0.9"/>
+  <!-- outer petals hint -->
+  <path d="M21 26c3-6 7-9 11-10" stroke="#c98997" stroke-width="1.2" stroke-linecap="round" opacity="0.55"/>
+  <path d="M43 26c-3-6-7-9-11-10" stroke="#c98997" stroke-width="1.2" stroke-linecap="round" opacity="0.55"/>
+</svg>

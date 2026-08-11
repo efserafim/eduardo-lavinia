@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useDeferredValue, useMemo, useState } from "react";
 import { formatBRL } from "@/lib/money";
-import { Ornament } from "./Ornament";
 
 export type GiftItem = {
   id: string;
@@ -37,9 +36,7 @@ export function GiftList({ items }: { items: GiftItem[] }) {
     const q = normalize(deferredQuery);
     if (!q) return items;
     return items.filter((item) => {
-      const haystack = normalize(
-        `${item.name} ${item.description || ""}`
-      );
+      const haystack = normalize(`${item.name} ${item.description || ""}`);
       return haystack.includes(q);
     });
   }, [items, deferredQuery]);
@@ -66,46 +63,46 @@ export function GiftList({ items }: { items: GiftItem[] }) {
 
   return (
     <section id="presentes" className="section-pad">
-      <div className="section-rule" aria-hidden />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(240,228,230,0.35),transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(240,228,230,0.28),transparent_55%)]" />
 
-      <div className="relative mx-auto max-w-5xl">
-        <div className="animate-fade-up flex flex-col items-center text-center">
+      <div className="relative mx-auto max-w-6xl">
+        <div className="animate-fade-up mx-auto flex max-w-2xl flex-col items-center text-center">
           <p className="eyebrow">Lista de desejos</p>
           <h2 className="section-title">Para o nosso lar</h2>
-          <Ornament className="mt-5" />
           <p className="section-lead">
             Escolha um desejo e contribua com o valor que quiser.
           </p>
-        </div>
 
-        <div className="mx-auto mt-10 max-w-md">
-          <label className="label text-center" htmlFor="gift-search">
-            Buscar presente
-          </label>
-          <input
-            id="gift-search"
-            className="field text-center"
-            type="search"
-            value={query}
-            onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Ex.: panela, cafeteira…"
-            autoComplete="off"
-          />
-          <p className="mt-2 text-center font-display text-sm text-ink-faint">
-            {filtered.length === 0
-              ? "Nenhum item encontrado"
-              : `${filtered.length} ${filtered.length === 1 ? "item" : "itens"}`}
-            {totalPages > 1 ? ` · página ${currentPage} de ${totalPages}` : ""}
-          </p>
+          <div className="mt-6 w-full max-w-sm">
+            <label className="sr-only" htmlFor="gift-search">
+              Buscar presente
+            </label>
+            <input
+              id="gift-search"
+              className="field !py-3 text-center"
+              type="search"
+              value={query}
+              onChange={(e) => onSearchChange(e.target.value)}
+              placeholder="Buscar presente…"
+              autoComplete="off"
+            />
+            <p className="mt-2 font-display text-sm text-ink-faint">
+              {filtered.length === 0
+                ? "Nenhum item encontrado"
+                : `${filtered.length} ${filtered.length === 1 ? "item" : "itens"}`}
+              {totalPages > 1
+                ? ` · página ${currentPage} de ${totalPages}`
+                : ""}
+            </p>
+          </div>
         </div>
 
         {visible.length === 0 ? (
-          <p className="mt-12 text-center font-display text-lg text-ink-soft">
+          <p className="mt-8 text-center font-display text-lg text-ink-soft">
             Tente outro termo de busca.
           </p>
         ) : (
-          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4">
             {visible.map((item, index) => (
               <li
                 key={item.id}
@@ -134,15 +131,15 @@ export function GiftList({ items }: { items: GiftItem[] }) {
                   )}
                 </div>
 
-                <div className="flex flex-1 flex-col p-4">
-                  <h3 className="font-display line-clamp-2 min-h-[2.6em] text-xl leading-snug text-marsala">
+                <div className="flex flex-1 flex-col p-3.5 sm:p-4">
+                  <h3 className="font-display line-clamp-2 min-h-[2.4em] text-lg leading-snug text-marsala sm:text-xl">
                     {item.name}
                   </h3>
 
-                  <div className="mt-3">
-                    <div className="relative h-px w-full overflow-hidden bg-marsala/12">
+                  <div className="mt-2.5">
+                    <div className="relative h-1 w-full overflow-hidden rounded-sm bg-marsala/10">
                       <div
-                        className="absolute inset-y-0 left-0 bg-marsala/65"
+                        className="absolute inset-y-0 left-0 bg-marsala/60"
                         style={{
                           width: `${Math.max(
                             item.percentRaised,
@@ -152,12 +149,16 @@ export function GiftList({ items }: { items: GiftItem[] }) {
                       />
                     </div>
                     <div className="mt-1.5 flex justify-between gap-2 font-display text-sm text-ink-faint">
-                      <span className="truncate">{formatBRL(item.raisedCents)}</span>
-                      <span className="shrink-0">meta {formatBRL(item.targetAmount)}</span>
+                      <span className="truncate">
+                        {formatBRL(item.raisedCents)}
+                      </span>
+                      <span className="shrink-0">
+                        meta {formatBRL(item.targetAmount)}
+                      </span>
                     </div>
                   </div>
 
-                  <div className="mt-auto pt-4">
+                  <div className="mt-auto pt-3">
                     {item.isComplete ? (
                       <span className="btn-ghost w-full cursor-default opacity-50">
                         Obrigado
@@ -179,7 +180,7 @@ export function GiftList({ items }: { items: GiftItem[] }) {
 
         {totalPages > 1 && (
           <nav
-            className="mt-10 flex flex-wrap items-center justify-center gap-2"
+            className="mt-8 flex flex-wrap items-center justify-center gap-2"
             aria-label="Paginação da lista"
           >
             <button

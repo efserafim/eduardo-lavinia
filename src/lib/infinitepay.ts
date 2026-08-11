@@ -36,9 +36,16 @@ export function isInfinitePayConfigured(): boolean {
   return Boolean(infinitepayHandle());
 }
 
+function formatAmountLabel(cents: number) {
+  return (cents / 100).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
+}
+
 /**
- * Cria link de checkout InfinitePay.
- * Sem handle: retorna URL de demo local que marca a doação como paga.
+ * Cria um link de checkout InfinitePay por doação, com o valor informado.
+ * Sem handle: retorna URL de demo local.
  */
 export async function createInfinitePayCheckout(
   input: CreateCheckoutInput
@@ -52,7 +59,14 @@ export async function createInfinitePayCheckout(
   }
 
   const handle = infinitepayHandle();
+  const amountCents = Math.round(input.amountCents);
   const redirect = `${siteUrl()}/obrigado?donationId=${input.donationId}`;
+  const description =
+    `Chá de Panela — ${input.itemName} (${formatAmountLabel(amountCents)})`.slice(
+      0,
+      120
+    );
+
   const payload: Record<string, unknown> = {
     handle,
     order_nsu: input.donationId,
@@ -60,8 +74,8 @@ export async function createInfinitePayCheckout(
     items: [
       {
         quantity: 1,
-        price: input.amountCents,
-        description: `Chá de Panela — ${input.itemName}`.slice(0, 120),
+        price: amountCents,
+        description,
       },
     ],
   };
@@ -86,14 +100,22 @@ export async function createInfinitePayCheckout(
   });
 
   const raw = await response.text();
-  let data: { url?: string; message?: string; error?: string } = {};
+  let data: {
+    url?: string;
+    checkout_url?: string;
+    link?: string;
+    message?: string;
+    error?: string;
+  } = {};
   try {
     data = raw ? JSON.parse(raw) : {};
   } catch {
     data = { message: raw };
   }
 
-  if (!response.ok || !data.url) {
+  const checkoutUrl = data.url || data.checkout_url || data.link;
+
+  if (!response.ok || !checkoutUrl) {
     console.error("InfinitePay checkout error:", response.status, raw);
     throw new Error(
       `Falha ao criar checkout InfinitePay (${response.status})${
@@ -103,7 +125,7 @@ export async function createInfinitePayCheckout(
   }
 
   return {
-    checkoutUrl: data.url,
+    checkoutUrl,
     orderNsu: input.donationId,
     demo: false,
   };

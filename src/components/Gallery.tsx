@@ -1,5 +1,3 @@
-import { Ornament } from "./Ornament";
-
 type Photo = {
   id: string;
   url: string;
@@ -18,26 +16,23 @@ export function Gallery({ photos }: { photos: Photo[] }) {
 
   return (
     <section id="galeria" className="section-pad">
-      <div className="section-rule" aria-hidden />
-
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-6xl">
         <div className="animate-fade-up flex flex-col items-center text-center">
           <p className="eyebrow">Nossa história</p>
           <h2 className="section-title">Eduardo & Lavínia</h2>
-          <Ornament className="mt-5" />
           <p className="section-lead">
             Memórias que nos trouxeram até aqui — e as que ainda vamos escrever.
           </p>
         </div>
 
-        <div className="mt-16 grid items-end gap-6 sm:grid-cols-3 sm:gap-5">
+        <div className="mt-10 grid items-end gap-4 sm:grid-cols-3 sm:gap-4 md:mt-12">
           {slots.map((photo, index) => (
             <figure
               key={photo.id}
               className={`animate-fade-up photo-frame group ${
-                index === 1 ? "sm:-translate-y-6" : ""
+                index === 1 ? "sm:-translate-y-4" : ""
               }`}
-              style={{ animationDelay: `${0.12 * index}s` }}
+              style={{ animationDelay: `${0.1 * index}s` }}
             >
               <div className="relative aspect-[3/4] overflow-hidden bg-sand/40">
                 {photo.url ? (
@@ -59,7 +54,7 @@ export function Gallery({ photos }: { photos: Photo[] }) {
                 )}
               </div>
               {photo.caption && (
-                <figcaption className="relative z-10 mt-3 text-center font-display text-base italic leading-snug text-marsala-mid">
+                <figcaption className="relative z-10 mt-2.5 text-center font-display text-[0.95rem] italic leading-snug text-marsala-mid">
                   {photo.caption}
                 </figcaption>
               )}
