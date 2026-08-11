@@ -116,7 +116,17 @@ export async function createInfinitePayCheckout(
   const checkoutUrl = data.url || data.checkout_url || data.link;
 
   if (!response.ok || !checkoutUrl) {
-    console.error("InfinitePay checkout error:", response.status, raw);
+    console.error("InfinitePay checkout error:", response.status, raw, {
+      handle,
+      amountCents,
+    });
+
+    if (response.status === 422) {
+      throw new Error(
+        "InfinitePay recusou o link (422). Confira se INFINITEPAY_HANDLE é a InfiniteTag correta (ex.: eduardo-ferreira-qzg, sem $) e se o Checkout Integrado está habilitado no app."
+      );
+    }
+
     throw new Error(
       `Falha ao criar checkout InfinitePay (${response.status})${
         data.message || data.error ? `: ${data.message || data.error}` : ""
