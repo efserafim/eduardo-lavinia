@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Ornament } from "@/components/Ornament";
 
 const patrons = [
   {
@@ -25,7 +26,10 @@ const patrons = [
 export function SiteFooter() {
   return (
     <footer className="section-pad !pb-12 flex flex-col items-center text-center">
-      <p className="eyebrow animate-fade-up">Sob a proteção de</p>
+      <div className="animate-fade-up flex flex-col items-center">
+        <p className="eyebrow">Sob a proteção de</p>
+        <Ornament className="mt-4" />
+      </div>
 
       <div className="mt-10 flex flex-wrap items-end justify-center gap-8 md:mt-12 md:gap-12">
         {patrons.map((patron, index) => (
@@ -62,7 +66,9 @@ export function SiteFooter() {
         ))}
       </div>
 
-      <div className="animate-fade-up mt-14 max-w-md">
+      <Ornament className="mt-12" />
+
+      <div className="animate-fade-up mt-8 max-w-md">
         <p className="eyebrow">Com a bênção de</p>
         <p className="section-title !mt-2 !text-[1.65rem] md:!text-[1.9rem]">
           Nossos pais
