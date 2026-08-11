@@ -44,7 +44,8 @@ export function SiteFooter() {
                 alt={patron.alt}
                 width={patron.wide ? 360 : 280}
                 height={360}
-                className={`mx-auto h-auto opacity-95 ${
+                unoptimized
+                className={`mx-auto h-auto bg-transparent opacity-95 ${
                   patron.wide
                     ? "w-[8.5rem] md:w-[10rem]"
                     : "w-[5.75rem] md:w-[6.75rem]"
@@ -63,7 +64,12 @@ export function SiteFooter() {
         ))}
       </div>
 
-      <p className="script-title mt-10 text-[2.15rem] md:text-[2.4rem]">
+      <p className="eyebrow mt-10 !text-[0.62rem]">Com a bênção de</p>
+      <p className="font-display mt-2 text-base tracking-[0.04em] text-marsala-mid md:text-lg">
+        Nossos pais
+      </p>
+
+      <p className="script-title mt-8 text-[2.15rem] md:text-[2.4rem]">
         Eduardo &amp; Lavínia
       </p>
       <p className="mt-3 max-w-sm text-sm leading-relaxed text-ink-soft">
