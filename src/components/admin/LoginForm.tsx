@@ -10,6 +10,7 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -41,7 +42,7 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="mx-auto w-full max-w-sm space-y-4">
+    <form onSubmit={onSubmit} className="admin-panel mx-auto w-full max-w-sm space-y-5">
       <div>
         <label className="label" htmlFor="email">
           E-mail
@@ -59,12 +60,21 @@ export function LoginForm() {
         />
       </div>
       <div>
-        <label className="label" htmlFor="password">
-          Senha
-        </label>
+        <div className="mb-2 flex items-center justify-between gap-3">
+          <label className="label !mb-0" htmlFor="password">
+            Senha
+          </label>
+          <button
+            type="button"
+            className="text-[0.7rem] tracking-wide text-ink-faint uppercase transition hover:text-marsala"
+            onClick={() => setShowPassword((v) => !v)}
+          >
+            {showPassword ? "Ocultar" : "Mostrar"}
+          </button>
+        </div>
         <input
           id="password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           className="field"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -72,7 +82,11 @@ export function LoginForm() {
           autoComplete="current-password"
         />
       </div>
-      {error && <p className="text-sm text-marsala">{error}</p>}
+      {error && (
+        <p role="alert" className="text-sm text-marsala">
+          {error}
+        </p>
+      )}
       <button type="submit" className="btn-primary w-full" disabled={loading}>
         {loading ? "Entrando…" : "Entrar"}
       </button>

@@ -16,14 +16,18 @@ export default async function AdminPage() {
         <FloralWash />
         <FiligreeCorner position="tl" className="top-6 left-6" />
         <FiligreeCorner position="tr" className="top-6 right-6" />
+        <FiligreeCorner position="bl" className="bottom-6 left-6" />
+        <FiligreeCorner position="br" className="bottom-6 right-6" />
 
-        <div className="relative z-10 mx-auto w-full max-w-sm">
+        <div className="relative z-10 mx-auto w-full max-w-md animate-fade-up">
           <div className="text-center">
             <p className="eyebrow">Área do casal</p>
-            <h1 className="font-script mt-3 text-5xl text-marsala">Entrar</h1>
+            <h1 className="font-script mt-3 text-5xl text-marsala sm:text-6xl">
+              Entrar
+            </h1>
             <Ornament className="mt-6" />
-            <p className="mt-4 text-sm text-ink-soft">
-              Use o e-mail e a senha criados no Supabase Auth.
+            <p className="mx-auto mt-5 max-w-xs text-sm leading-relaxed text-ink-soft">
+              Acesso exclusivo para gerenciar presentes, galeria e doações.
             </p>
           </div>
           <div className="mt-10">

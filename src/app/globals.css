@@ -421,6 +421,126 @@ body {
   background: var(--cream);
 }
 
+/* —— Área do casal —— */
+.admin-topbar {
+  background: rgba(250, 246, 241, 0.82);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(14px);
+}
+
+.admin-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.95rem;
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.03em;
+  color: var(--ink-faint);
+  border-bottom: 1px solid transparent;
+  white-space: nowrap;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.admin-tab:hover {
+  color: var(--marsala-mid);
+}
+
+.admin-tab.is-active {
+  color: var(--marsala);
+  border-bottom-color: var(--marsala);
+}
+
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  padding: 0 0.3rem;
+  font-family: var(--font-outfit), system-ui, sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0;
+  color: var(--pearl);
+  background: var(--marsala);
+}
+
+.admin-panel {
+  padding: 1.25rem 1.35rem;
+  background: rgba(255, 255, 255, 0.48);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(8px);
+}
+
+@media (min-width: 640px) {
+  .admin-panel {
+    padding: 1.5rem 1.65rem;
+  }
+}
+
+.admin-stat {
+  padding: 1.25rem 1.35rem;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.72),
+    rgba(243, 235, 225, 0.55)
+  );
+  border: 1px solid var(--line);
+}
+
+.admin-stat-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky-soft);
+}
+
+.admin-stat-value {
+  margin-top: 0.55rem;
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 1.85rem;
+  line-height: 1.1;
+  color: var(--marsala);
+}
+
+.admin-stat-meta {
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+}
+
+.admin-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid var(--line);
+  color: var(--ink-faint);
+}
+
+.admin-status.is-paid {
+  color: var(--sage);
+  border-color: rgba(138, 154, 123, 0.45);
+  background: rgba(138, 154, 123, 0.08);
+}
+
+.admin-status.is-pending {
+  color: var(--gold-soft);
+  border-color: rgba(184, 149, 108, 0.45);
+  background: rgba(184, 149, 108, 0.08);
+}
+
+.admin-status.is-cancelled {
+  color: var(--ink-faint);
+  border-color: var(--line-strong);
+  background: rgba(92, 36, 52, 0.04);
+  text-decoration: line-through;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up,
   .animate-soft-scale,
