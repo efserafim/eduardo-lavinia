@@ -116,7 +116,7 @@ export function DonateForm({
       </div>
 
       <p className="text-center text-sm leading-relaxed text-ink-faint">
-        Pagamento seguro via PagSeguro — cartão, PIX ou boleto.
+        Pagamento seguro via InfinitePay — cartão ou PIX.
         {itemName ? ` Presente: ${itemName}.` : ""}
       </p>
     </form>

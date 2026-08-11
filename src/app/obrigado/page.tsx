@@ -2,21 +2,55 @@ import Link from "next/link";
 import { FiligreeCorner, FloralWash, Ornament } from "@/components/Ornament";
 import { prisma } from "@/lib/db";
 import { formatBRL } from "@/lib/money";
+import { checkInfinitePayPayment } from "@/lib/infinitepay";
 
 export const dynamic = "force-dynamic";
 
 export default async function ObrigadoPage({
   searchParams,
 }: {
-  searchParams: Promise<{ donationId?: string }>;
+  searchParams: Promise<{
+    donationId?: string;
+    order_nsu?: string;
+    transaction_nsu?: string;
+    slug?: string;
+    receipt_url?: string;
+  }>;
 }) {
-  const { donationId } = await searchParams;
+  const params = await searchParams;
+  const donationId = params.donationId || params.order_nsu;
 
   let itemName: string | null = null;
   let amount: number | null = null;
   let donorName: string | null = null;
+  let receiptUrl: string | null = params.receipt_url || null;
 
   if (donationId) {
+    if (
+      params.transaction_nsu &&
+      params.slug &&
+      (params.order_nsu || params.donationId)
+    ) {
+      try {
+        const check = await checkInfinitePayPayment({
+          orderNsu: params.order_nsu || donationId,
+          transactionNsu: params.transaction_nsu,
+          slug: params.slug,
+        });
+        if (check.paid) {
+          await prisma.donation.updateMany({
+            where: { id: donationId, status: { not: "paid" } },
+            data: {
+              status: "paid",
+              externalId: params.transaction_nsu,
+            },
+          });
+        }
+      } catch (err) {
+        console.error("payment_check on obrigado:", err);
+      }
+    }
+
     const donation = await prisma.donation.findUnique({
       where: { id: donationId },
       include: { item: true },
@@ -57,6 +91,16 @@ export default async function ObrigadoPage({
         <p className="mt-4 text-sm text-ink-faint">
           Que o nosso lar seja sempre tão acolhedor quanto o seu gesto.
         </p>
+        {receiptUrl && (
+          <a
+            href={receiptUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-ghost mt-6"
+          >
+            Ver comprovante
+          </a>
+        )}
         <p className="script-title mt-10 text-[2.25rem]">Eduardo & Lavínia</p>
         <Link href="/" className="btn-ghost mt-10">
           Voltar ao início

@@ -1,14 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { parseBRLToCents } from "@/lib/money";
-import { createPagBankCheckout } from "@/lib/pagbank";
+import { createInfinitePayCheckout } from "@/lib/infinitepay";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const itemId = String(body.itemId || "");
     const donorName =
-      typeof body.donorName === "string" ? body.donorName.trim().slice(0, 80) : null;
+      typeof body.donorName === "string"
+        ? body.donorName.trim().slice(0, 80)
+        : null;
     const amountRaw = String(body.amount || "");
 
     const amountCents = parseBRLToCents(amountRaw);
@@ -54,7 +56,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const checkout = await createPagBankCheckout({
+    const checkout = await createInfinitePayCheckout({
       donationId: donation.id,
       itemName: item.name,
       amountCents,
@@ -63,7 +65,7 @@ export async function POST(req: NextRequest) {
 
     await prisma.donation.update({
       where: { id: donation.id },
-      data: { pagbankOrderId: checkout.orderId },
+      data: { externalId: checkout.orderNsu },
     });
 
     return NextResponse.json({

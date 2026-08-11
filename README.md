@@ -1,6 +1,6 @@
 # Chá de Panela — Eduardo & Lavínia
 
-Site de chá de panela com lista de presentes, contribuições de valor livre, progresso por item e integração PagBank (PagSeguro).
+Site de chá de panela com lista de presentes, contribuições de valor livre, progresso por item e integração InfinitePay.
 
 ## Como rodar (local)
 
@@ -19,8 +19,8 @@ Abra [http://localhost:3000](http://localhost:3000).
 - Opcional: `ADMIN_EMAILS` no `.env.local` limita quem pode entrar
 
 No admin você pode:
-- Criar e excluir itens (nome + valor-meta + foto)
-- Ver doações pagas
+- Criar, editar e excluir presentes (nome + valor-meta + foto)
+- Ver e editar doações
 - Enviar fotos da galeria
 
 ## Variáveis de ambiente
@@ -29,50 +29,36 @@ Copie `.env.example` para `.env.local` e ajuste:
 
 | Variável | Descrição |
 |----------|-----------|
-| `DATABASE_URL` | URI Postgres do Supabase (Settings → Database) |
+| `DATABASE_URL` | URI Postgres do Supabase (pooler, porta 6543) |
+| `DIRECT_URL` | URI direta do Postgres (migrations) |
 | `NEXT_PUBLIC_SUPABASE_URL` | URL do projeto Supabase |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Chave publishable do Supabase |
 | `ADMIN_EMAILS` | E-mails autorizados na área do casal |
-| `PAGBANK_TOKEN` | Token da API PagBank (vazio = modo demo) |
-| `PAGBANK_EMAIL` | E-mail da conta |
-| `NEXT_PUBLIC_SITE_URL` | URL do site (para redirects e webhook) |
-
-### Supabase (banco)
-
-1. No [Supabase](https://supabase.com): **Project Settings → Database → Connection string → URI**
-2. Cole a URI em `DATABASE_URL` (troque `[YOUR-PASSWORD]` pela senha do banco)
-3. Rode:
-
-```bash
-npm run db:setup
-```
-
-Isso cria as tabelas e os itens de exemplo no Postgres.
+| `INFINITEPAY_HANDLE` | InfiniteTag (sem `$`). Vazio = modo demo |
+| `NEXT_PUBLIC_SITE_URL` | URL pública do site (redirects e webhook) |
 
 ## Pagamentos
 
-### Modo demo (sem token)
+### Modo demo (sem handle)
 
-Com `PAGBANK_TOKEN` vazio, ao clicar em contribuir o site simula o pagamento e atualiza o progresso imediatamente. Ideal para testar a lista.
+Com `INFINITEPAY_HANDLE` vazio, ao clicar em contribuir o site simula o pagamento e atualiza o progresso imediatamente.
 
-### PagBank / PagSeguro (produção)
+### InfinitePay (produção)
 
-1. Crie uma conta no [PagBank](https://pagbank.com.br) e gere um token de API.
-2. Preencha `PAGBANK_TOKEN` no `.env.local`.
-3. Configure o webhook para: `https://seu-dominio.com/api/webhooks/pagbank`
-4. Reinicie o servidor.
+1. Conta no [InfinitePay](https://www.infinitepay.io) e anote sua **InfiniteTag** (handle, sem `$`).
+2. Preencha `INFINITEPAY_HANDLE` no `.env.local` e na Vercel.
+3. Defina `NEXT_PUBLIC_SITE_URL` = `https://eduardo-lavinia.vercel.app`.
+4. No painel InfinitePay, webhook:
 
-O fluxo cria um checkout hospedado e redireciona o convidado para pagar (cartão, PIX, boleto).
+```
+https://eduardo-lavinia.vercel.app/api/webhooks/infinitepay
+```
+
+O fluxo cria um link de checkout e redireciona o convidado (cartão ou PIX). Após o pagamento, o webhook e a página `/obrigado` marcam a doação como paga.
 
 ## Estrutura
 
 - `/` — landing, galeria e lista de presentes
 - `/doar/[itemId]` — escolher valor e pagar
 - `/obrigado` — confirmação
-- `/admin` — dashboard do casal
-
-Logo: `public/logo.png` (cópia de `image/eduardo e lavinia.png`).
-
-## Próximo passo (hospedagem)
-
-Quando for publicar: migrar SQLite → Postgres (ex.: Supabase), configurar variáveis na Vercel e apontar o webhook do PagBank para a URL pública.
+- `/admin` — área do casal
