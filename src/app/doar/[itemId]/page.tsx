@@ -84,7 +84,6 @@ export default async function DoarPage({
         <div className="mt-12">
           <DonateForm
             itemId={item.id}
-            itemName={item.name}
             remainingCents={progress.remainingCents}
           />
         </div>

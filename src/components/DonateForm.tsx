@@ -5,11 +5,9 @@ import { useRouter } from "next/navigation";
 
 export function DonateForm({
   itemId,
-  itemName,
   remainingCents,
 }: {
   itemId: string;
-  itemName: string;
   remainingCents: number;
 }) {
   const router = useRouter();
@@ -114,11 +112,6 @@ export function DonateForm({
           {loading ? "Abrindo pagamento…" : "Contribuir"}
         </button>
       </div>
-
-      <p className="text-center text-sm leading-relaxed text-ink-faint">
-        Pagamento seguro via InfinitePay — cartão ou PIX.
-        {itemName ? ` Presente: ${itemName}.` : ""}
-      </p>
     </form>
   );
 }
