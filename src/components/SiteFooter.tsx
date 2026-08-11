@@ -61,10 +61,15 @@ export function SiteFooter() {
         ))}
       </div>
 
-      <p className="eyebrow mt-10 !text-[0.62rem]">Com a bênção de</p>
-      <p className="font-display mt-2 text-base tracking-[0.04em] text-marsala-mid md:text-lg">
-        Nossos pais
-      </p>
+      <div className="mt-10 max-w-md">
+        <p className="eyebrow !text-[0.62rem]">Com a bênção de</p>
+        <p className="font-display mt-2 text-xl tracking-[0.03em] text-marsala md:text-2xl">
+          Nossos pais
+        </p>
+        <p className="mt-2.5 text-sm font-light leading-relaxed text-ink-soft">
+          Que nos ensinaram o amor e nos acompanham, com oração, neste novo lar.
+        </p>
+      </div>
 
       <p className="script-title mt-8 text-[2.15rem] md:text-[2.4rem]">
         Eduardo &amp; Lavínia
