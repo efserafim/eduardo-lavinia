@@ -12,13 +12,14 @@ npm run dev
 
 Abra [http://localhost:3000](http://localhost:3000).
 
-### Admin
+### Admin (Supabase Auth)
 
 - URL: [http://localhost:3000/admin](http://localhost:3000/admin)
-- Senha padrão: `casamento2026` (altere em `.env.local`)
+- Crie o usuário em **Supabase → Authentication → Users → Add user**
+- Opcional: `ADMIN_EMAILS` no `.env.local` limita quem pode entrar
 
 No admin você pode:
-- Criar e excluir itens (nome + valor-meta)
+- Criar e excluir itens (nome + valor-meta + foto)
 - Ver doações pagas
 - Enviar fotos da galeria
 
@@ -28,12 +29,25 @@ Copie `.env.example` para `.env.local` e ajuste:
 
 | Variável | Descrição |
 |----------|-----------|
-| `DATABASE_URL` | SQLite local (`file:./dev.db`) |
-| `ADMIN_PASSWORD` | Senha da área do casal |
-| `AUTH_SECRET` | Segredo do cookie de sessão |
+| `DATABASE_URL` | URI Postgres do Supabase (Settings → Database) |
+| `NEXT_PUBLIC_SUPABASE_URL` | URL do projeto Supabase |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Chave publishable do Supabase |
+| `ADMIN_EMAILS` | E-mails autorizados na área do casal |
 | `PAGBANK_TOKEN` | Token da API PagBank (vazio = modo demo) |
-| `PAGBANK_EMAIL` | E-mail da conta (referência) |
+| `PAGBANK_EMAIL` | E-mail da conta |
 | `NEXT_PUBLIC_SITE_URL` | URL do site (para redirects e webhook) |
+
+### Supabase (banco)
+
+1. No [Supabase](https://supabase.com): **Project Settings → Database → Connection string → URI**
+2. Cole a URI em `DATABASE_URL` (troque `[YOUR-PASSWORD]` pela senha do banco)
+3. Rode:
+
+```bash
+npm run db:setup
+```
+
+Isso cria as tabelas e os itens de exemplo no Postgres.
 
 ## Pagamentos
 

@@ -64,6 +64,9 @@ export function AdminDashboard({
   }
 
   async function logout() {
+    const { createBrowserSupabase } = await import("@/lib/supabase/client");
+    const supabase = createBrowserSupabase();
+    await supabase.auth.signOut();
     await fetch("/api/auth/login", { method: "DELETE" });
     router.refresh();
   }

@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { createBrowserSupabase } from "@/lib/supabase/client";
 
 export function LoginForm() {
   const router = useRouter();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -13,22 +15,49 @@ export function LoginForm() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
-    });
-    setLoading(false);
-    if (!res.ok) {
-      const data = await res.json();
-      setError(data.error || "Falha no login.");
-      return;
+
+    try {
+      const supabase = createBrowserSupabase();
+      const { error: signError } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
+
+      if (signError) {
+        setError(
+          signError.message === "Invalid login credentials"
+            ? "E-mail ou senha incorretos."
+            : signError.message
+        );
+        setLoading(false);
+        return;
+      }
+
+      router.refresh();
+    } catch {
+      setError("Não foi possível entrar. Tente novamente.");
+      setLoading(false);
     }
-    router.refresh();
   }
 
   return (
     <form onSubmit={onSubmit} className="mx-auto w-full max-w-sm space-y-4">
+      <div>
+        <label className="label" htmlFor="email">
+          E-mail
+        </label>
+        <input
+          id="email"
+          type="email"
+          className="field"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="voces@email.com"
+          required
+          autoFocus
+          autoComplete="email"
+        />
+      </div>
       <div>
         <label className="label" htmlFor="password">
           Senha
@@ -40,7 +69,7 @@ export function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          autoFocus
+          autoComplete="current-password"
         />
       </div>
       {error && <p className="text-sm text-marsala">{error}</p>}

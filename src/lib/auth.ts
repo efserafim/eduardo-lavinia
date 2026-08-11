@@ -1,48 +1,30 @@
-import { SignJWT, jwtVerify } from "jose";
-import { cookies } from "next/headers";
+import { createServerSupabase } from "@/lib/supabase/server";
 
-const COOKIE_NAME = "cha_admin_session";
-
-function getSecret() {
-  const secret = process.env.AUTH_SECRET || "dev-secret-eduardo-lavinia";
-  return new TextEncoder().encode(secret);
+function allowedAdminEmails(): string[] {
+  const raw = process.env.ADMIN_EMAILS || "";
+  return raw
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
 }
 
-export async function createAdminSession() {
-  const token = await new SignJWT({ role: "admin" })
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    .setExpirationTime("7d")
-    .sign(getSecret());
+export async function getAdminUser() {
+  const supabase = await createServerSupabase();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  const cookieStore = await cookies();
-  cookieStore.set(COOKIE_NAME, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7,
-  });
-}
+  if (!user?.email) return null;
 
-export async function destroyAdminSession() {
-  const cookieStore = await cookies();
-  cookieStore.delete(COOKIE_NAME);
+  const allow = allowedAdminEmails();
+  if (allow.length > 0 && !allow.includes(user.email.toLowerCase())) {
+    return null;
+  }
+
+  return user;
 }
 
 export async function isAdminAuthenticated(): Promise<boolean> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(COOKIE_NAME)?.value;
-  if (!token) return false;
-  try {
-    await jwtVerify(token, getSecret());
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-export function verifyAdminPassword(password: string): boolean {
-  const expected = process.env.ADMIN_PASSWORD || "casamento2026";
-  return password === expected;
+  const user = await getAdminUser();
+  return Boolean(user);
 }

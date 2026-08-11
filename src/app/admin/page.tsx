@@ -19,11 +19,12 @@ export default async function AdminPage() {
 
         <div className="relative z-10 mx-auto w-full max-w-sm">
           <div className="text-center">
-            <p className="text-[0.68rem] tracking-[0.35em] text-sky-soft uppercase">
-              Área do casal
-            </p>
+            <p className="eyebrow">Área do casal</p>
             <h1 className="font-script mt-3 text-5xl text-marsala">Entrar</h1>
             <Ornament className="mt-6" />
+            <p className="mt-4 text-sm text-ink-soft">
+              Use o e-mail e a senha criados no Supabase Auth.
+            </p>
           </div>
           <div className="mt-10">
             <LoginForm />

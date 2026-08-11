@@ -1,23 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import {
-  createAdminSession,
-  destroyAdminSession,
-  verifyAdminPassword,
-} from "@/lib/auth";
-
-export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const password = String(body.password || "");
-
-  if (!verifyAdminPassword(password)) {
-    return NextResponse.json({ error: "Senha incorreta." }, { status: 401 });
-  }
-
-  await createAdminSession();
-  return NextResponse.json({ ok: true });
-}
+import { NextResponse } from "next/server";
+import { createServerSupabase } from "@/lib/supabase/server";
 
 export async function DELETE() {
-  await destroyAdminSession();
+  const supabase = await createServerSupabase();
+  await supabase.auth.signOut();
   return NextResponse.json({ ok: true });
 }
