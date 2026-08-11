@@ -45,6 +45,49 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(92, 36, 52, 0.35) var(--cream);
+}
+
+/* Scrollbar no visual do site (WebKit / Chromium / Safari) */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: linear-gradient(
+    180deg,
+    var(--pearl) 0%,
+    var(--cream) 50%,
+    var(--sand) 100%
+  );
+  border-left: 1px solid var(--line);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(122, 58, 74, 0.45) 0%,
+    rgba(92, 36, 52, 0.55) 100%
+  );
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(122, 58, 74, 0.7) 0%,
+    rgba(92, 36, 52, 0.85) 100%
+  );
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+*::-webkit-scrollbar-corner {
+  background: var(--cream);
 }
 
 body {
