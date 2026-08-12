@@ -118,7 +118,7 @@ export function GiftList({ items }: { items: GiftItem[] }) {
                     <img
                       src={item.imageUrl}
                       alt={item.name}
-                      className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
+                      className="h-full w-full object-contain p-3 transition duration-700 group-hover:scale-[1.02] sm:p-4"
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-blush-mist/50 to-cream">

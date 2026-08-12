@@ -695,7 +695,7 @@ export function AdminDashboard({
                           <img
                             src={item.imageUrl}
                             alt={item.name}
-                            className="h-full w-full object-cover"
+                            className="h-full w-full object-contain p-1.5"
                           />
                         ) : (
                           <div className="flex h-full items-center justify-center font-script text-xl text-marsala/25">

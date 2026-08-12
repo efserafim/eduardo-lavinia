@@ -490,9 +490,11 @@ body {
 
 .gift-tile-media {
   position: relative;
-  aspect-ratio: 5 / 4;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
-  background: var(--cream);
+  background:
+    radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.7), transparent 65%),
+    var(--cream);
 }
 
 /* —— Área do casal —— */
