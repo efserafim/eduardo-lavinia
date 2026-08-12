@@ -11,25 +11,25 @@ export function Hero() {
       <FiligreeCorner position="bl" className="bottom-3 left-3 md:bottom-6 md:left-6" />
       <FiligreeCorner position="br" className="right-3 bottom-3 md:right-6 md:bottom-6" />
 
-      <nav className="animate-fade-up relative z-10 flex items-center justify-center gap-8 px-6 pt-7 md:gap-10 md:pt-10">
+      <nav className="animate-fade-up relative z-10 flex items-center justify-center gap-7 px-6 pt-6 md:pt-8">
         <a
           href="#galeria"
-          className="font-display text-[0.9rem] tracking-[0.18em] text-marsala/70 transition duration-300 hover:text-marsala"
+          className="font-display text-[0.95rem] tracking-[0.08em] text-marsala/75 transition hover:text-marsala"
         >
           Nós
         </a>
-        <span className="h-1 w-1 rotate-45 bg-gold-soft/60" aria-hidden />
+        <span className="h-1 w-1 rotate-45 bg-gold-soft/70" aria-hidden />
         <a
           href="#presentes"
-          className="font-display text-[0.9rem] tracking-[0.18em] text-marsala/70 transition duration-300 hover:text-marsala"
+          className="font-display text-[0.95rem] tracking-[0.08em] text-marsala/75 transition hover:text-marsala"
         >
           Presentes
         </a>
       </nav>
 
-      <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 pb-24 pt-4 text-center md:pb-28">
-        <div className="animate-soft-scale relative mx-auto w-full max-w-[min(76vw,320px)] md:max-w-[360px]">
-          <div className="animate-float absolute inset-10 -z-10 rounded-full bg-[radial-gradient(circle,rgba(201,137,151,0.16),transparent_70%)] blur-xl" />
+      <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 pb-20 pt-2 text-center md:pb-24">
+        <div className="animate-soft-scale relative mx-auto w-full max-w-[min(78vw,340px)] md:max-w-[380px]">
+          <div className="animate-float absolute inset-10 -z-10 rounded-full bg-[radial-gradient(circle,rgba(201,137,151,0.18),transparent_70%)] blur-xl" />
           <Image
             src="/logo-el.png"
             alt="Eduardo & Lavínia"
@@ -41,15 +41,15 @@ export function Hero() {
         </div>
 
         <div
-          className="animate-fade-up mt-1 flex w-full max-w-md flex-col items-center"
+          className="animate-fade-up mt-0 flex w-full max-w-md flex-col items-center"
           style={{ animationDelay: "0.25s" }}
         >
           <p className="script-title">Chá de Panela</p>
-          <p className="section-lead mt-4 max-w-sm">
+          <p className="section-lead mt-3 max-w-sm">
             Cada carinho, no valor que o coração mandar, nos ajuda a montar o
             lar onde começamos juntos.
           </p>
-          <div className="mt-8">
+          <div className="mt-6">
             <a href="#presentes" className="btn-primary">
               Presentear o casal
             </a>
