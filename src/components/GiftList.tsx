@@ -93,9 +93,13 @@ function HoneymoonCard({ item }: { item: GiftItem }) {
               }}
             />
           </div>
-          <div className="mt-2 flex flex-wrap justify-between gap-2 font-display text-sm text-ink-faint sm:text-base">
-            <span>{formatBRL(item.raisedCents)} arrecadados</span>
-            <span>meta {formatBRL(item.targetAmount)}</span>
+          <div className="mt-2 flex flex-wrap items-baseline justify-between gap-2 font-display">
+            <span className="text-sm text-ink-faint sm:text-base">
+              {formatBRL(item.raisedCents)} arrecadados
+            </span>
+            <span className="text-base tracking-[0.02em] text-marsala sm:text-lg">
+              Meta {formatBRL(item.targetAmount)}
+            </span>
           </div>
         </div>
 
@@ -290,12 +294,12 @@ export function GiftList({ items }: { items: GiftItem[] }) {
                         }}
                       />
                     </div>
-                    <div className="mt-1.5 flex justify-between gap-2 font-display text-sm text-ink-faint">
-                      <span className="truncate">
+                    <div className="mt-2 flex items-baseline justify-between gap-2 font-display">
+                      <span className="truncate text-sm text-ink-faint">
                         {formatBRL(item.raisedCents)}
                       </span>
-                      <span className="shrink-0">
-                        meta {formatBRL(item.targetAmount)}
+                      <span className="shrink-0 text-base tracking-[0.02em] text-marsala sm:text-lg">
+                        Meta {formatBRL(item.targetAmount)}
                       </span>
                     </div>
                   </div>
