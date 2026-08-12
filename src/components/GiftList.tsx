@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useDeferredValue, useMemo, useState } from "react";
+import { Ornament } from "@/components/Ornament";
 import { formatBRL } from "@/lib/money";
 
 export type GiftItem = {
@@ -102,17 +103,18 @@ export function GiftList({ items }: { items: GiftItem[] }) {
         <div className="animate-fade-up mx-auto flex max-w-2xl flex-col items-center text-center">
           <p className="eyebrow">Lista de desejos</p>
           <h2 className="section-title">Para o nosso lar</h2>
+          <Ornament className="mt-5" />
           <p className="section-lead">
             Escolha um desejo e contribua com o valor que quiser.
           </p>
 
-          <div className="mt-6 w-full max-w-sm">
+          <div className="mt-8 w-full max-w-md">
             <label className="sr-only" htmlFor="gift-search">
               Buscar presente
             </label>
             <input
               id="gift-search"
-              className="field !py-3 text-center"
+              className="field !py-3.5 text-center tracking-[0.02em]"
               type="search"
               value={query}
               onChange={(e) => onSearchChange(e.target.value)}
@@ -120,16 +122,16 @@ export function GiftList({ items }: { items: GiftItem[] }) {
               autoComplete="off"
             />
 
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5">
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
               <label
                 htmlFor="gift-sort"
-                className="font-display text-sm tracking-[0.04em] text-ink-soft"
+                className="font-display text-[0.9rem] tracking-[0.06em] text-ink-soft"
               >
-                Ordenar lista por:
+                Ordenar lista por
               </label>
               <select
                 id="gift-sort"
-                className="field !w-auto !min-w-[9.5rem] !cursor-pointer !py-2 !pr-8 font-display text-sm text-marsala"
+                className="field !w-auto !min-w-[10rem] !cursor-pointer !border-marsala/20 !py-2 !pr-9 font-display text-[0.95rem] tracking-[0.03em] text-marsala"
                 value={sort}
                 onChange={(e) => onSortChange(e.target.value as SortKey)}
               >
@@ -141,7 +143,7 @@ export function GiftList({ items }: { items: GiftItem[] }) {
               </select>
             </div>
 
-            <p className="mt-2 font-display text-sm text-ink-faint">
+            <p className="mt-3 font-display text-sm tracking-[0.03em] text-ink-faint">
               {filtered.length === 0
                 ? "Nenhum item encontrado"
                 : `${filtered.length} ${filtered.length === 1 ? "item" : "itens"}`}
@@ -157,7 +159,7 @@ export function GiftList({ items }: { items: GiftItem[] }) {
             Tente outro termo de busca.
           </p>
         ) : (
-          <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4">
+          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
             {visible.map((item, index) => (
               <li
                 key={item.id}
@@ -170,40 +172,41 @@ export function GiftList({ items }: { items: GiftItem[] }) {
                     <img
                       src={item.imageUrl}
                       alt={item.name}
-                      className="h-full w-full object-contain p-3 transition duration-700 group-hover:scale-[1.02] sm:p-4"
+                      className="h-full w-full object-contain p-4 transition duration-700 group-hover:scale-[1.02] sm:p-5"
                     />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-blush-mist/50 to-cream">
-                      <span className="font-script text-3xl text-marsala/25">
+                    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-blush-mist/45 to-cream">
+                      <span className="font-script text-3xl text-marsala/22">
                         E&L
                       </span>
                     </div>
                   )}
                   {item.isComplete && (
-                    <span className="absolute top-2 right-2 bg-pearl/90 px-2 py-0.5 font-display text-xs italic text-gold-soft">
+                    <span className="absolute top-3 right-3 bg-pearl/92 px-2.5 py-0.5 font-display text-xs italic tracking-[0.04em] text-gold-soft">
                       completo
                     </span>
                   )}
                 </div>
 
-                <div className="flex flex-1 flex-col p-3.5 sm:p-4">
-                  <h3 className="font-display line-clamp-2 min-h-[2.4em] text-lg leading-snug text-marsala sm:text-xl">
+                <div className="flex flex-1 flex-col px-4 py-4 sm:px-5 sm:py-5">
+                  <h3 className="font-display line-clamp-2 min-h-[2.5em] text-lg leading-snug tracking-[0.01em] text-marsala sm:text-xl">
                     {item.name}
                   </h3>
 
-                  <div className="mt-2.5">
-                    <div className="relative h-1 w-full overflow-hidden rounded-sm bg-marsala/10">
+                  <div className="mt-3.5">
+                    <div className="relative h-px w-full overflow-visible bg-marsala/10">
                       <div
-                        className="absolute inset-y-0 left-0 bg-marsala/60"
+                        className="absolute inset-y-0 left-0 bg-marsala/55"
                         style={{
                           width: `${Math.max(
                             item.percentRaised,
                             item.percentRaised > 0 ? 1 : 0
                           )}%`,
+                          height: "1px",
                         }}
                       />
                     </div>
-                    <div className="mt-1.5 flex justify-between gap-2 font-display text-sm text-ink-faint">
+                    <div className="mt-2 flex justify-between gap-2 font-display text-[0.9rem] tracking-[0.02em] text-ink-faint">
                       <span className="truncate">
                         {formatBRL(item.raisedCents)}
                       </span>
@@ -213,7 +216,7 @@ export function GiftList({ items }: { items: GiftItem[] }) {
                     </div>
                   </div>
 
-                  <div className="mt-auto pt-3">
+                  <div className="mt-auto pt-4">
                     {item.isComplete ? (
                       <span className="btn-ghost w-full cursor-default opacity-50">
                         Obrigado
