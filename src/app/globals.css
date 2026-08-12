@@ -506,15 +506,17 @@ body {
 
 .honeymoon-card-media {
   position: relative;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 2 / 1;
+  max-height: 14rem;
   overflow: hidden;
   background: var(--sand);
 }
 
 @media (min-width: 768px) {
   .honeymoon-card-media {
-    aspect-ratio: 21 / 9;
-    min-height: 17rem;
+    aspect-ratio: 2.4 / 1;
+    max-height: 16.5rem;
+    min-height: 0;
   }
 }
 
