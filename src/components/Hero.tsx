@@ -47,7 +47,7 @@ export function Hero() {
           <p className="script-title">Chá de Panela</p>
           <p className="section-lead mt-3 max-w-sm">
             Cada carinho, no valor que o coração mandar, nos ajuda a montar o
-            lar onde começamos juntos.
+            lar onde começaremos juntos.
           </p>
           <div className="mt-6">
             <a href="#presentes" className="btn-primary">
