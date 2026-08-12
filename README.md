@@ -33,6 +33,7 @@ Copie `.env.example` para `.env.local` e ajuste:
 | `DIRECT_URL` | URI direta do Postgres (migrations) |
 | `NEXT_PUBLIC_SUPABASE_URL` | URL do projeto Supabase |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Chave publishable do Supabase |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service role (API) — upload de fotos na Vercel |
 | `ADMIN_EMAILS` | E-mails autorizados na área do casal |
 | `INFINITEPAY_HANDLE` | InfiniteTag (sem `$`). Vazio = modo demo |
 | `NEXT_PUBLIC_SITE_URL` | URL pública do site (redirects e webhook) |

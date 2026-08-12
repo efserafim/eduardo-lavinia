@@ -87,6 +87,7 @@ export function AdminDashboard({
   const [editDescription, setEditDescription] = useState("");
   const [editTarget, setEditTarget] = useState("");
   const [editSaving, setEditSaving] = useState(false);
+  const [imageUploadingId, setImageUploadingId] = useState<string | null>(null);
 
   const [caption, setCaption] = useState("");
   const [uploading, setUploading] = useState(false);
@@ -241,11 +242,13 @@ export function AdminDashboard({
   async function updateItemImage(id: string, file: File | null) {
     if (!file) return;
     setMessage("");
+    setImageUploadingId(id);
     const fd = new FormData();
     fd.append("id", id);
     fd.append("image", file);
     const res = await fetch("/api/items", { method: "PUT", body: fd });
     const data = await res.json();
+    setImageUploadingId(null);
     if (!res.ok) {
       setMessage(data.error || "Erro ao enviar foto do item.");
       return;
@@ -799,8 +802,8 @@ export function AdminDashboard({
                           </>
                         )}
 
-                        {!editing && (
-                          <div className="mt-4 flex flex-wrap gap-2">
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          {!editing && (
                             <button
                               type="button"
                               className="btn-chip"
@@ -808,49 +811,64 @@ export function AdminDashboard({
                             >
                               Editar
                             </button>
-                            <label className="btn-chip cursor-pointer">
-                              {item.imageUrl ? "Trocar foto" : "Foto"}
-                              <input
-                                type="file"
-                                accept="image/*"
-                                className="hidden"
-                                onChange={(e) =>
-                                  updateItemImage(
-                                    item.id,
-                                    e.target.files?.[0] || null
-                                  )
-                                }
-                              />
-                            </label>
-                            {item.imageUrl && (
-                              <button
-                                type="button"
-                                className="btn-chip"
-                                onClick={() => removeItemImage(item.id)}
-                              >
-                                Remover foto
-                              </button>
-                            )}
+                          )}
+                          <label
+                            className={`btn-chip cursor-pointer ${
+                              imageUploadingId === item.id
+                                ? "pointer-events-none opacity-50"
+                                : ""
+                            }`}
+                          >
+                            {imageUploadingId === item.id
+                              ? "Enviando…"
+                              : item.imageUrl
+                                ? "Trocar foto"
+                                : "Adicionar foto"}
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              disabled={imageUploadingId === item.id}
+                              onChange={(e) => {
+                                const file = e.target.files?.[0] || null;
+                                e.target.value = "";
+                                void updateItemImage(item.id, file);
+                              }}
+                            />
+                          </label>
+                          {item.imageUrl && (
                             <button
                               type="button"
                               className="btn-chip"
-                              onClick={() =>
-                                setExpandedItem(open ? null : item.id)
-                              }
+                              disabled={imageUploadingId === item.id}
+                              onClick={() => removeItemImage(item.id)}
                             >
-                              {open
-                                ? "Ocultar doações"
-                                : `Doações (${item.donations.length})`}
+                              Remover foto
                             </button>
-                            <button
-                              type="button"
-                              className="btn-chip !text-marsala/60 hover:!text-marsala"
-                              onClick={() => deleteItem(item.id)}
-                            >
-                              Excluir
-                            </button>
-                          </div>
-                        )}
+                          )}
+                          {!editing && (
+                            <>
+                              <button
+                                type="button"
+                                className="btn-chip"
+                                onClick={() =>
+                                  setExpandedItem(open ? null : item.id)
+                                }
+                              >
+                                {open
+                                  ? "Ocultar doações"
+                                  : `Doações (${item.donations.length})`}
+                              </button>
+                              <button
+                                type="button"
+                                className="btn-chip !text-marsala/60 hover:!text-marsala"
+                                onClick={() => deleteItem(item.id)}
+                              >
+                                Excluir
+                              </button>
+                            </>
+                          )}
+                        </div>
                       </div>
                     </div>
 
