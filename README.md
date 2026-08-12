@@ -33,8 +33,14 @@ Copie `.env.example` para `.env.local` e ajuste:
 | `DIRECT_URL` | URI direta do Postgres (migrations) |
 | `NEXT_PUBLIC_SUPABASE_URL` | URL do projeto Supabase |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Chave publishable do Supabase |
-| `SUPABASE_SERVICE_ROLE_KEY` | Service role (API) — upload de fotos na Vercel |
+| `SUPABASE_SERVICE_ROLE_KEY` | (Opcional) Service role — facilita criar o bucket de fotos |
 | `ADMIN_EMAILS` | E-mails autorizados na área do casal |
+
+### Fotos no admin (Storage)
+
+1. No Supabase → **SQL Editor**, execute `supabase/storage-uploads.sql` (cria o bucket `uploads`).
+2. Ou, em **Storage**, crie o bucket `uploads` como **Public**.
+3. (Opcional) Na Vercel, adicione `SUPABASE_SERVICE_ROLE_KEY` (Settings → API → `service_role`).
 | `INFINITEPAY_HANDLE` | InfiniteTag (sem `$`). Vazio = modo demo |
 | `NEXT_PUBLIC_SITE_URL` | URL pública do site (redirects e webhook) |
 

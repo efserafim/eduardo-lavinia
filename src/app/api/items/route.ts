@@ -139,6 +139,13 @@ export async function PUT(req: NextRequest) {
         data.imageUrl = null;
       }
 
+      if (Object.keys(data).length === 0) {
+        return NextResponse.json(
+          { error: "Nada para atualizar. Envie uma foto ou altere os dados." },
+          { status: 400 }
+        );
+      }
+
       const item = await prisma.item.update({ where: { id }, data });
       return NextResponse.json({ item });
     }
