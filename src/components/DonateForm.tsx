@@ -85,6 +85,9 @@ export function DonateForm({
             required
           />
         </div>
+        <p className="mt-2 text-center font-display text-sm leading-relaxed text-ink-faint">
+          Ou digite na caixa o valor que quiser contribuir.
+        </p>
         {suggestions.length > 0 && (
           <div className="mt-4 flex flex-wrap justify-center gap-2.5">
             {suggestions.map((v) => (
