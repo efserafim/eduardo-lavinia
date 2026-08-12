@@ -22,10 +22,18 @@ async function ensureHoneymoonItem() {
   });
 
   if (existing) {
+    const nextData: { imageUrl?: string; description?: string } = {};
     if (!existing.imageUrl) {
+      nextData.imageUrl = "/lua-de-mel.jpg";
+    }
+    if (existing.description?.includes("—") || existing.description?.includes("–")) {
+      nextData.description =
+        "Uma contribuição para a nossa viagem dos sonhos, o começo da vida a dois em algum lugar especial.";
+    }
+    if (Object.keys(nextData).length > 0) {
       return prisma.item.update({
         where: { id: existing.id },
-        data: { imageUrl: "/lua-de-mel.jpg" },
+        data: nextData,
       });
     }
     return existing;
@@ -35,7 +43,7 @@ async function ensureHoneymoonItem() {
     data: {
       name: HONEYMOON_NAME,
       description:
-        "Uma contribuição para a nossa viagem dos sonhos — o começo da vida a dois em algum lugar especial.",
+        "Uma contribuição para a nossa viagem dos sonhos, o começo da vida a dois em algum lugar especial.",
       targetAmount: 500000,
       imageUrl: "/lua-de-mel.jpg",
     },

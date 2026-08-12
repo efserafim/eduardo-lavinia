@@ -1,4 +1,4 @@
-# Chá de Panela — Eduardo & Lavínia
+# Chá de Panela · Eduardo & Lavínia
 
 Site de chá de panela com lista de presentes, contribuições de valor livre, progresso por item e integração InfinitePay.
 
@@ -33,7 +33,7 @@ Copie `.env.example` para `.env.local` e ajuste:
 | `DIRECT_URL` | URI direta do Postgres (migrations) |
 | `NEXT_PUBLIC_SUPABASE_URL` | URL do projeto Supabase |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Chave publishable do Supabase |
-| `SUPABASE_SERVICE_ROLE_KEY` | (Opcional) Service role — facilita criar o bucket de fotos |
+| `SUPABASE_SERVICE_ROLE_KEY` | (Opcional) Service role; facilita criar o bucket de fotos |
 | `ADMIN_EMAILS` | E-mails autorizados na área do casal |
 
 ### Fotos no admin (Storage)
@@ -65,7 +65,7 @@ O fluxo cria um link de checkout e redireciona o convidado (cartão ou PIX). Ap�
 
 ## Estrutura
 
-- `/` — landing, galeria e lista de presentes
-- `/doar/[itemId]` — escolher valor e pagar
-- `/obrigado` — confirmação
-- `/admin` — área do casal
+- `/` · landing, galeria e lista de presentes
+- `/doar/[itemId]` · escolher valor e pagar
+- `/obrigado` · confirmação
+- `/admin` · área do casal

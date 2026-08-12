@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
 /**
- * Webhook InfinitePay — pagamento aprovado.
+ * Webhook InfinitePay: pagamento aprovado.
  * Responda 200 rápido; 400 pede reenvio.
  */
 export async function POST(req: NextRequest) {

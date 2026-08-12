@@ -62,7 +62,7 @@ export async function createInfinitePayCheckout(
   const amountCents = Math.round(input.amountCents);
   const redirect = `${siteUrl()}/obrigado?donationId=${input.donationId}`;
   const description =
-    `Chá de Panela — ${input.itemName} (${formatAmountLabel(amountCents)})`.slice(
+    `Chá de Panela · ${input.itemName} (${formatAmountLabel(amountCents)})`.slice(
       0,
       120
     );

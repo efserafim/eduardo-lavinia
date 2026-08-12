@@ -6,7 +6,7 @@ const supabaseKey =
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
   "";
 
-/** Cliente simples (sem cookies) — uso pontual. Preferir client/server SSR para auth. */
+/** Cliente simples (sem cookies). Preferir client/server SSR para auth. */
 export function getSupabase() {
   if (!supabaseUrl || !supabaseKey) {
     throw new Error(

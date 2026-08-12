@@ -43,7 +43,7 @@ function getServiceSupabase() {
 async function ensurePublicBucket(supabase: SupabaseClient) {
   const { data: buckets, error: listError } = await supabase.storage.listBuckets();
   if (listError) {
-    // Sem permissão para listar — tenta upload direto.
+    // Sem permissão para listar; tenta upload direto.
     return;
   }
   if (buckets?.some((b) => b.name === BUCKET)) return;

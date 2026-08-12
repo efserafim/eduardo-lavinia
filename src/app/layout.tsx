@@ -25,7 +25,7 @@ const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
   "https://eduardo-lavinia.vercel.app";
 
-const title = "Eduardo & Lavínia — Chá de Panela";
+const title = "Eduardo & Lavínia · Chá de Panela";
 const description =
   "Celebre conosco o nosso chá de panela. Escolha um presente e contribua com o valor que desejar.";
 

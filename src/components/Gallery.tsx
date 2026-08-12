@@ -21,7 +21,7 @@ export function Gallery({ photos }: { photos: Photo[] }) {
           <p className="eyebrow">Nossa história</p>
           <h2 className="section-title">Eduardo & Lavínia</h2>
           <p className="section-lead">
-            Memórias que nos trouxeram até aqui — e as que ainda vamos escrever.
+            Memórias que nos trouxeram até aqui, e as que ainda vamos escrever.
           </p>
         </div>
 
