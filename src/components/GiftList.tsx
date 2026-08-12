@@ -19,6 +19,14 @@ export type GiftItem = {
 
 const PAGE_SIZE = 6;
 
+type SortKey = "az" | "price-asc" | "price-desc";
+
+const SORT_OPTIONS: { value: SortKey; label: string }[] = [
+  { value: "az", label: "A-Z" },
+  { value: "price-asc", label: "Menor preço" },
+  { value: "price-desc", label: "Maior preço" },
+];
+
 function normalize(text: string) {
   return text
     .normalize("NFD")
@@ -27,19 +35,36 @@ function normalize(text: string) {
     .trim();
 }
 
+function sortItems(items: GiftItem[], sort: SortKey) {
+  const next = [...items];
+  if (sort === "az") {
+    next.sort((a, b) =>
+      normalize(a.name).localeCompare(normalize(b.name), "pt-BR")
+    );
+  } else if (sort === "price-asc") {
+    next.sort((a, b) => a.targetAmount - b.targetAmount);
+  } else {
+    next.sort((a, b) => b.targetAmount - a.targetAmount);
+  }
+  return next;
+}
+
 export function GiftList({ items }: { items: GiftItem[] }) {
   const [query, setQuery] = useState("");
+  const [sort, setSort] = useState<SortKey>("az");
   const [page, setPage] = useState(1);
   const deferredQuery = useDeferredValue(query);
 
   const filtered = useMemo(() => {
     const q = normalize(deferredQuery);
-    if (!q) return items;
-    return items.filter((item) => {
-      const haystack = normalize(`${item.name} ${item.description || ""}`);
-      return haystack.includes(q);
-    });
-  }, [items, deferredQuery]);
+    const matched = !q
+      ? items
+      : items.filter((item) => {
+          const haystack = normalize(`${item.name} ${item.description || ""}`);
+          return haystack.includes(q);
+        });
+    return sortItems(matched, sort);
+  }, [items, deferredQuery, sort]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
@@ -48,6 +73,11 @@ export function GiftList({ items }: { items: GiftItem[] }) {
 
   function onSearchChange(value: string) {
     setQuery(value);
+    setPage(1);
+  }
+
+  function onSortChange(value: SortKey) {
+    setSort(value);
     setPage(1);
   }
 
@@ -89,6 +119,28 @@ export function GiftList({ items }: { items: GiftItem[] }) {
               placeholder="Buscar presente…"
               autoComplete="off"
             />
+
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5">
+              <label
+                htmlFor="gift-sort"
+                className="font-display text-sm tracking-[0.04em] text-ink-soft"
+              >
+                Ordenar lista por:
+              </label>
+              <select
+                id="gift-sort"
+                className="field !w-auto !min-w-[9.5rem] !cursor-pointer !py-2 !pr-8 font-display text-sm text-marsala"
+                value={sort}
+                onChange={(e) => onSortChange(e.target.value as SortKey)}
+              >
+                {SORT_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <p className="mt-2 font-display text-sm text-ink-faint">
               {filtered.length === 0
                 ? "Nenhum item encontrado"
