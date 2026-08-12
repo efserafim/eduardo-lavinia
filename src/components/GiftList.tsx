@@ -58,23 +58,23 @@ function HoneymoonCard({ item }: { item: GiftItem }) {
         <img
           src={item.imageUrl || "/lua-de-mel.jpg"}
           alt={item.name}
-          className="h-full w-full object-cover transition duration-[1.4s] ease-out group-hover:scale-[1.03]"
+          className="transition duration-[1.4s] ease-out group-hover:scale-[1.03]"
         />
         <div className="honeymoon-card-veil" aria-hidden />
         <div className="honeymoon-card-copy">
-          <p className="eyebrow !text-[0.62rem] !tracking-[0.32em] text-pearl/85">
+          <p className="eyebrow !text-[0.58rem] !tracking-[0.3em] !text-pearl/80">
             Destaque
           </p>
-          <h3 className="script-title !text-[2.6rem] text-pearl md:!text-[3.2rem]">
+          <h3 className="script-title mt-1 !text-[2.35rem] !text-pearl md:!text-[2.85rem]">
             Lua de Mel
           </h3>
-          <p className="mx-auto mt-2 max-w-md font-light leading-relaxed text-pearl/90">
+          <p className="mx-auto mt-1.5 max-w-lg text-[0.9rem] font-light leading-relaxed text-pearl/90">
             {item.description ||
               "Uma contribuição para a nossa viagem dos sonhos."}
           </p>
         </div>
         {item.isComplete && (
-          <span className="absolute top-4 right-4 bg-pearl/90 px-3 py-1 font-display text-sm italic text-gold-soft">
+          <span className="absolute top-4 right-4 z-[2] bg-pearl/90 px-3 py-1 font-display text-sm italic text-gold-soft">
             completo
           </span>
         )}

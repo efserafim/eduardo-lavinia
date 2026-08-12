@@ -506,18 +506,25 @@ body {
 
 .honeymoon-card-media {
   position: relative;
-  aspect-ratio: 2 / 1;
-  max-height: 14rem;
+  width: 100%;
+  height: 13.5rem;
   overflow: hidden;
   background: var(--sand);
 }
 
 @media (min-width: 768px) {
   .honeymoon-card-media {
-    aspect-ratio: 2.4 / 1;
-    max-height: 16.5rem;
-    min-height: 0;
+    height: 15.5rem;
   }
+}
+
+.honeymoon-card-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 .honeymoon-card-veil {
@@ -526,22 +533,29 @@ body {
   background:
     linear-gradient(
       180deg,
-      rgba(47, 34, 38, 0.12) 0%,
-      rgba(47, 34, 38, 0.28) 45%,
-      rgba(47, 34, 38, 0.62) 100%
+      rgba(47, 34, 38, 0.2) 0%,
+      rgba(47, 34, 38, 0.35) 40%,
+      rgba(47, 34, 38, 0.72) 100%
     );
 }
 
 .honeymoon-card-copy {
   position: absolute;
-  inset: auto 1.25rem 1.35rem;
+  left: 50%;
+  bottom: 1.25rem;
   z-index: 1;
+  width: min(100% - 2rem, 34rem);
+  transform: translateX(-50%);
+  padding: 0.85rem 1rem;
   text-align: center;
+  background: rgba(47, 34, 38, 0.28);
+  backdrop-filter: blur(8px);
 }
 
 @media (min-width: 768px) {
   .honeymoon-card-copy {
-    inset: auto 2rem 1.75rem;
+    bottom: 1.5rem;
+    padding: 1rem 1.35rem;
   }
 }
 
