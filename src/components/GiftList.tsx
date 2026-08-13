@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useDeferredValue, useMemo, useState } from "react";
 import { formatBRL } from "@/lib/money";
+import { ORATORY_DESCRIPTION, ORATORY_TEACHING } from "@/lib/oratory";
 
 export type GiftItem = {
   id: string;
@@ -15,7 +16,7 @@ export type GiftItem = {
   percentRaised: number;
   percentRemaining: number;
   isComplete: boolean;
-  isHoneymoon?: boolean;
+  isOratory?: boolean;
 };
 
 const PAGE_SIZE = 6;
@@ -50,28 +51,26 @@ function sortItems(items: GiftItem[], sort: SortKey) {
   return next;
 }
 
-function HoneymoonCard({ item }: { item: GiftItem }) {
+function OratoryCard({ item }: { item: GiftItem }) {
+  const description = item.description || ORATORY_DESCRIPTION;
+
   return (
-    <article className="animate-fade-up honeymoon-card group">
-      <div className="honeymoon-card-media">
+    <article className="animate-fade-up featured-card group">
+      <div className="featured-card-media">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={item.imageUrl || "/lua-de-mel.jpg"}
+          src={item.imageUrl || "/oratorio.jpg"}
           alt={item.name}
           className="transition duration-[1.4s] ease-out group-hover:scale-[1.03]"
         />
-        <div className="honeymoon-card-veil" aria-hidden />
-        <div className="honeymoon-card-copy">
+        <div className="featured-card-veil" aria-hidden />
+        <div className="featured-card-copy">
           <p className="eyebrow !text-[0.58rem] !tracking-[0.3em] !text-pearl/80">
-            Destaque
+            Igreja doméstica
           </p>
           <h3 className="script-title mt-1 !text-[2.35rem] !text-pearl md:!text-[2.85rem]">
-            Lua de Mel
+            Oratório
           </h3>
-          <p className="mx-auto mt-1.5 max-w-lg text-[0.9rem] font-light leading-relaxed text-pearl/90">
-            {item.description ||
-              "Uma contribuição para a nossa viagem dos sonhos."}
-          </p>
         </div>
         {item.isComplete && (
           <span className="absolute top-4 right-4 z-[2] bg-pearl/90 px-3 py-1 font-display text-sm italic text-gold-soft">
@@ -80,37 +79,48 @@ function HoneymoonCard({ item }: { item: GiftItem }) {
         )}
       </div>
 
-      <div className="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7 sm:py-6">
-        <div className="min-w-0 flex-1">
-          <div className="relative h-1 w-full overflow-hidden bg-marsala/10">
-            <div
-              className="absolute inset-y-0 left-0 bg-marsala/65"
-              style={{
-                width: `${Math.max(
-                  item.percentRaised,
-                  item.percentRaised > 0 ? 1 : 0
-                )}%`,
-              }}
-            />
-          </div>
-          <div className="mt-2 flex flex-wrap items-baseline justify-between gap-2 font-display">
-            <span className="text-sm text-ink-faint sm:text-base">
-              {formatBRL(item.raisedCents)} arrecadados
-            </span>
-            <span className="text-base tracking-[0.02em] text-marsala sm:text-lg">
-              Meta {formatBRL(item.targetAmount)}
-            </span>
-          </div>
-        </div>
+      <div className="space-y-5 px-5 py-5 sm:px-7 sm:py-6">
+        <p className="mx-auto max-w-3xl text-center font-display text-[0.98rem] leading-relaxed text-ink-soft sm:text-base">
+          {description}
+        </p>
+        <p className="mx-auto max-w-2xl text-center text-sm font-light leading-relaxed text-ink-faint">
+          {ORATORY_TEACHING}
+        </p>
 
-        <div className="shrink-0 sm:pl-6">
-          {item.isComplete ? (
-            <span className="btn-ghost cursor-default opacity-50">Obrigado</span>
-          ) : (
-            <Link href={`/doar/${item.id}`} className="btn-primary">
-              Presentear a viagem
-            </Link>
-          )}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0 flex-1">
+            <div className="relative h-1 w-full overflow-hidden bg-marsala/10">
+              <div
+                className="absolute inset-y-0 left-0 bg-marsala/65"
+                style={{
+                  width: `${Math.max(
+                    item.percentRaised,
+                    item.percentRaised > 0 ? 1 : 0
+                  )}%`,
+                }}
+              />
+            </div>
+            <div className="mt-2 flex flex-wrap items-baseline justify-between gap-2 font-display">
+              <span className="text-sm text-ink-faint sm:text-base">
+                {formatBRL(item.raisedCents)} arrecadados
+              </span>
+              <span className="text-base tracking-[0.02em] text-marsala sm:text-lg">
+                Meta {formatBRL(item.targetAmount)}
+              </span>
+            </div>
+          </div>
+
+          <div className="shrink-0 sm:pl-6">
+            {item.isComplete ? (
+              <span className="btn-ghost cursor-default opacity-50">
+                Obrigado
+              </span>
+            ) : (
+              <Link href={`/doar/${item.id}`} className="btn-primary">
+                Presentear o oratório
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </article>
@@ -123,15 +133,15 @@ export function GiftList({ items }: { items: GiftItem[] }) {
   const [page, setPage] = useState(1);
   const deferredQuery = useDeferredValue(query);
 
-  const honeymoon = useMemo(
-    () => items.find((item) => item.isHoneymoon) || null,
+  const oratory = useMemo(
+    () => items.find((item) => item.isOratory) || null,
     [items]
   );
 
   const filtered = useMemo(() => {
     const q = normalize(deferredQuery);
     const matched = items.filter((item) => {
-      if (item.isHoneymoon) return false;
+      if (item.isOratory) return false;
       if (!q) return true;
       const haystack = normalize(`${item.name} ${item.description || ""}`);
       return haystack.includes(q);
@@ -139,12 +149,14 @@ export function GiftList({ items }: { items: GiftItem[] }) {
     return sortItems(matched, sort);
   }, [items, deferredQuery, sort]);
 
-  const showHoneymoon =
-    honeymoon &&
+  const showOratory =
+    oratory &&
     (!normalize(deferredQuery) ||
-      normalize(`${honeymoon.name} ${honeymoon.description || ""}`).includes(
+      normalize(`${oratory.name} ${oratory.description || ""}`).includes(
         normalize(deferredQuery)
-      ));
+      ) ||
+      normalize(deferredQuery).includes("oratorio") ||
+      normalize(deferredQuery).includes("igreja"));
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
@@ -170,7 +182,7 @@ export function GiftList({ items }: { items: GiftItem[] }) {
   }
 
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
-  const listCount = filtered.length + (showHoneymoon ? 1 : 0);
+  const listCount = filtered.length + (showOratory ? 1 : 0);
 
   return (
     <section id="presentes" className="section-pad">
@@ -233,20 +245,20 @@ export function GiftList({ items }: { items: GiftItem[] }) {
           </div>
         </div>
 
-        {showHoneymoon && honeymoon ? (
+        {showOratory && oratory ? (
           <div className="mt-10 md:mt-12">
-            <HoneymoonCard item={honeymoon} />
+            <OratoryCard item={oratory} />
           </div>
         ) : null}
 
-        {visible.length === 0 && !showHoneymoon ? (
+        {visible.length === 0 && !showOratory ? (
           <p className="mt-8 text-center font-display text-lg text-ink-soft">
             Tente outro termo de busca.
           </p>
         ) : visible.length > 0 ? (
           <ul
             className={`grid gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4 ${
-              showHoneymoon ? "mt-6 md:mt-8" : "mt-8"
+              showOratory ? "mt-6 md:mt-8" : "mt-8"
             }`}
           >
             {visible.map((item, index) => (

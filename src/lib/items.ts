@@ -1,18 +1,22 @@
 import { prisma } from "@/lib/db";
 import { progressForItem } from "@/lib/money";
+import {
+  isOratoryItem,
+  ORATORY_DESCRIPTION,
+  ORATORY_NAME,
+} from "@/lib/oratory";
 
-const HONEYMOON_NAME = "Lua de Mel";
+async function ensureOratoryItem() {
+  const oratory = await prisma.item.findFirst({
+    where: {
+      OR: [
+        { name: { contains: "Oratório", mode: "insensitive" } },
+        { name: { contains: "Oratorio", mode: "insensitive" } },
+      ],
+    },
+  });
 
-function isHoneymoonItem(name: string, description?: string | null) {
-  const haystack = `${name} ${description || ""}`
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
-  return haystack.includes("lua de mel");
-}
-
-async function ensureHoneymoonItem() {
-  const existing = await prisma.item.findFirst({
+  const honeymoon = await prisma.item.findFirst({
     where: {
       OR: [
         { name: { contains: "Lua de Mel", mode: "insensitive" } },
@@ -21,37 +25,51 @@ async function ensureHoneymoonItem() {
     },
   });
 
-  if (existing) {
-    const nextData: { imageUrl?: string; description?: string } = {};
-    if (!existing.imageUrl) {
-      nextData.imageUrl = "/lua-de-mel.jpg";
+  if (oratory) {
+    const nextData: {
+      name?: string;
+      description?: string;
+      imageUrl?: string;
+    } = {};
+    if (oratory.name !== ORATORY_NAME) nextData.name = ORATORY_NAME;
+    if (oratory.description !== ORATORY_DESCRIPTION) {
+      nextData.description = ORATORY_DESCRIPTION;
     }
-    if (existing.description?.includes("—") || existing.description?.includes("–")) {
-      nextData.description =
-        "Uma contribuição para a nossa viagem dos sonhos, o começo da vida a dois em algum lugar especial.";
+    if (!oratory.imageUrl || oratory.imageUrl.includes("lua-de-mel")) {
+      nextData.imageUrl = "/oratorio.jpg";
     }
     if (Object.keys(nextData).length > 0) {
       return prisma.item.update({
-        where: { id: existing.id },
+        where: { id: oratory.id },
         data: nextData,
       });
     }
-    return existing;
+    return oratory;
+  }
+
+  if (honeymoon) {
+    return prisma.item.update({
+      where: { id: honeymoon.id },
+      data: {
+        name: ORATORY_NAME,
+        description: ORATORY_DESCRIPTION,
+        imageUrl: "/oratorio.jpg",
+      },
+    });
   }
 
   return prisma.item.create({
     data: {
-      name: HONEYMOON_NAME,
-      description:
-        "Uma contribuição para a nossa viagem dos sonhos, o começo da vida a dois em algum lugar especial.",
+      name: ORATORY_NAME,
+      description: ORATORY_DESCRIPTION,
       targetAmount: 500000,
-      imageUrl: "/lua-de-mel.jpg",
+      imageUrl: "/oratorio.jpg",
     },
   });
 }
 
 export async function getItemsWithProgress() {
-  await ensureHoneymoonItem();
+  await ensureOratoryItem();
 
   const items = await prisma.item.findMany({
     orderBy: { createdAt: "asc" },
@@ -73,7 +91,7 @@ export async function getItemsWithProgress() {
       targetAmount: item.targetAmount,
       imageUrl: item.imageUrl,
       createdAt: item.createdAt,
-      isHoneymoon: isHoneymoonItem(item.name, item.description),
+      isOratory: isOratoryItem(item.name, item.description),
       ...progress,
       isComplete: progress.percentRaised >= 100,
     };
