@@ -441,7 +441,7 @@ export function AdminDashboard({
           <section className="animate-fade-up space-y-8">
             <div className="text-center">
               <p className="eyebrow">Visão geral</p>
-              <h2 className="script-title mt-2">Chá de panela</h2>
+              <h2 className="script-title mt-2">Casamento</h2>
               <Ornament className="mt-4" />
             </div>
 

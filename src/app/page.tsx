@@ -1,5 +1,6 @@
 import { Hero } from "@/components/Hero";
 import { Gallery } from "@/components/Gallery";
+import { InvitationReveal } from "@/components/InvitationReveal";
 import { OratorySection } from "@/components/OratorySection";
 import { GiftList } from "@/components/GiftList";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -18,6 +19,7 @@ export default async function HomePage() {
 
   return (
     <main>
+      <InvitationReveal />
       <Hero />
       <Gallery photos={photos} />
       <OratorySection item={oratory} />

@@ -747,12 +747,367 @@ body {
   text-decoration: line-through;
 }
 
+/* Convite de abertura (gatefold sobre o site) */
+.invite-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: transparent;
+  transition: opacity 0.7s ease, visibility 0.7s ease;
+  pointer-events: none;
+}
+
+.invite-overlay--closed,
+.invite-overlay--opening {
+  pointer-events: auto;
+}
+
+.invite-overlay--leaving {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.invite-gate {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  perspective: 2000px;
+  transform-style: preserve-3d;
+  overflow: hidden;
+}
+
+.invite-overlay--closed .invite-gate:focus-visible {
+  outline: 2px solid rgba(92, 36, 52, 0.35);
+  outline-offset: -10px;
+}
+
+.invite-door {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.2%;
+  z-index: 2;
+  transform-style: preserve-3d;
+  transition: transform 1.25s cubic-bezier(0.65, 0.05, 0.22, 1);
+  will-change: transform;
+}
+
+.invite-door--left {
+  left: 0;
+  transform-origin: left center;
+}
+
+.invite-door--right {
+  right: 0;
+  transform-origin: right center;
+}
+
+.invite-door-face {
+  position: absolute;
+  inset: 0;
+  background-color: #f4ebe0;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(255, 252, 248, 0.28),
+      transparent 18%,
+      transparent 78%,
+      rgba(92, 36, 52, 0.05)
+    ),
+    linear-gradient(
+      90deg,
+      rgba(184, 149, 108, 0.22),
+      transparent 10%,
+      transparent 90%,
+      rgba(184, 149, 108, 0.22)
+    ),
+    url("/invite-door.jpg");
+  background-size: cover;
+  background-position: center;
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 149, 108, 0.22),
+    inset 0 0 48px rgba(255, 255, 255, 0.18);
+}
+
+.invite-door--left .invite-door-face {
+  background-position: left center;
+}
+
+.invite-door--right .invite-door-face {
+  background-position: right center;
+  transform: scaleX(-1);
+}
+
+.invite-door-shine {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    transparent 28%,
+    transparent 72%,
+    rgba(92, 36, 52, 0.04) 100%
+  );
+}
+
+.invite-door-seam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 1.1rem;
+  pointer-events: none;
+}
+
+.invite-door--left .invite-door-seam {
+  right: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(184, 149, 108, 0.18) 40%,
+    rgba(92, 36, 52, 0.14)
+  );
+  box-shadow: 4px 0 18px rgba(47, 34, 38, 0.08);
+}
+
+.invite-door--right .invite-door-seam {
+  left: 0;
+  background: linear-gradient(
+    270deg,
+    transparent,
+    rgba(184, 149, 108, 0.18) 40%,
+    rgba(92, 36, 52, 0.14)
+  );
+  box-shadow: -4px 0 18px rgba(47, 34, 38, 0.08);
+}
+
+.invite-overlay--opening .invite-door--left,
+.invite-overlay--leaving .invite-door--left {
+  transform: rotateY(-118deg);
+}
+
+.invite-overlay--opening .invite-door--right,
+.invite-overlay--leaving .invite-door--right {
+  transform: rotateY(118deg);
+}
+
+.invite-front {
+  position: absolute;
+  left: 50%;
+  top: 16%;
+  z-index: 4;
+  width: min(92vw, 24rem);
+  translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.6rem 1.4rem 1.5rem;
+  pointer-events: none;
+  transition:
+    opacity 0.4s ease,
+    transform 0.55s ease;
+}
+
+.invite-front::before {
+  content: "";
+  position: absolute;
+  inset: -0.4rem -0.8rem;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(250, 245, 238, 0.88) 0%,
+    rgba(250, 245, 238, 0.62) 42%,
+    rgba(250, 245, 238, 0) 72%
+  );
+  filter: blur(1px);
+}
+
+.invite-overlay--opening .invite-front,
+.invite-overlay--leaving .invite-front {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
+}
+
+.invite-front-eyebrow {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #5c2434;
+  text-shadow:
+    0 0 12px rgba(250, 245, 238, 0.95),
+    0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.invite-front-names {
+  margin-top: 0.4rem;
+  font-family: var(--font-great-vibes), cursive;
+  font-size: clamp(2.65rem, 9vw, 3.6rem);
+  line-height: 1.1;
+  color: #3f1824;
+  text-shadow:
+    0 0 14px rgba(250, 245, 238, 0.95),
+    0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.invite-front-rule {
+  width: 3.75rem;
+  height: 1px;
+  margin: 0.75rem 0 0.6rem;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(146, 110, 60, 0.95),
+    transparent
+  );
+}
+
+.invite-front-lead {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: clamp(1.3rem, 4vw, 1.55rem);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #4a1c2a;
+  text-shadow:
+    0 0 12px rgba(250, 245, 238, 0.95),
+    0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.invite-front-ornament {
+  width: 5.5rem;
+  height: 0.55rem;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(146, 110, 60, 0.95) 0 1.5px, transparent 1.8px),
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(146, 110, 60, 0.7),
+      transparent
+    );
+  background-size: 100% 100%, 100% 1px;
+  background-position: center, center;
+  background-repeat: no-repeat;
+  opacity: 0.95;
+}
+
+.invite-front-ornament--top {
+  margin-bottom: 0.85rem;
+}
+
+.invite-front-ornament--bottom {
+  margin-top: 0.9rem;
+}
+
+.invite-seal {
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  z-index: 5;
+  width: min(7.8rem, 30vw);
+  height: min(7.8rem, 30vw);
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  filter: drop-shadow(0 12px 16px rgba(70, 10, 20, 0.24));
+  transition:
+    transform 0.55s cubic-bezier(0.65, 0.05, 0.2, 1),
+    opacity 0.4s ease,
+    filter 0.55s ease;
+  background: transparent;
+}
+
+.invite-seal-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+.invite-overlay--closed .invite-seal {
+  animation: invite-seal-pulse 2.6s ease-in-out infinite;
+}
+
+.invite-overlay--opening .invite-seal,
+.invite-overlay--leaving .invite-seal {
+  transform: scale(0.45) rotate(-8deg);
+  opacity: 0;
+  filter: drop-shadow(0 6px 10px rgba(70, 10, 20, 0.12));
+  pointer-events: none;
+}
+
+.invite-hint {
+  position: absolute;
+  bottom: max(1.35rem, env(safe-area-inset-bottom));
+  left: 50%;
+  z-index: 6;
+  translate: -50% 0;
+  margin: 0;
+  padding: 0.35rem 0.5rem;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 1.12rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #3f1824;
+  text-shadow:
+    0 0 10px rgba(250, 245, 238, 1),
+    0 0 18px rgba(250, 245, 238, 0.95),
+    0 1px 0 rgba(255, 255, 255, 0.9);
+  animation: invite-hint-fade 1.8s ease-in-out infinite;
+}
+
+@keyframes invite-seal-pulse {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+    filter: drop-shadow(0 12px 16px rgba(70, 10, 20, 0.24));
+  }
+  50% {
+    transform: scale(1.04) rotate(1deg);
+    filter: drop-shadow(0 18px 24px rgba(70, 10, 20, 0.34));
+  }
+}
+
+@keyframes invite-hint-fade {
+  0%,
+  100% {
+    opacity: 0.62;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up,
   .animate-soft-scale,
   .animate-fill-bar,
   .animate-float,
-  .animate-bloom {
+  .animate-bloom,
+  .invite-overlay--closed .invite-seal,
+  .invite-hint,
+  .invite-door,
+  .invite-front {
     animation: none !important;
+    transition: none !important;
   }
 }

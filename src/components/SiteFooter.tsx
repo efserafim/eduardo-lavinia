@@ -81,7 +81,7 @@ export function SiteFooter() {
 
       <p className="script-title mt-10">Eduardo &amp; Lavínia</p>
       <p className="section-lead mt-3 !max-w-sm">
-        Com carinho, celebramos o início da nossa casa.
+        Com carinho, celebramos o nosso casamento e o início da nossa casa.
       </p>
 
       <Link

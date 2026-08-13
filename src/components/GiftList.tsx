@@ -101,10 +101,10 @@ export function GiftList({ items }: { items: GiftItem[] }) {
 
       <div className="relative mx-auto max-w-6xl">
         <div className="animate-fade-up mx-auto flex max-w-2xl flex-col items-center text-center">
-          <p className="eyebrow">Lista de desejos</p>
-          <h2 className="section-title">Para o nosso lar</h2>
+          <p className="eyebrow">Lista de presentes</p>
+          <h2 className="section-title">Para o nosso casamento</h2>
           <p className="section-lead">
-            Escolha um desejo e contribua com o valor que quiser.
+            Escolha um presente e contribua com o valor que quiser.
           </p>
 
           <div className="mt-6 w-full max-w-sm">

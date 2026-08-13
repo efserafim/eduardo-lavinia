@@ -25,9 +25,9 @@ const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
   "https://eduardo-lavinia.vercel.app";
 
-const title = "Eduardo & Lavínia · Chá de Panela";
+const title = "Eduardo & Lavínia · Casamento";
 const description =
-  "Celebre conosco o nosso chá de panela. Escolha um presente e contribua com o valor que desejar.";
+  "Celebre conosco o nosso casamento. Convite, memórias e presentes para o início da nossa vida a dois.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -40,10 +40,10 @@ export const metadata: Metadata = {
   authors: [{ name: "Eduardo & Lavínia" }],
   creator: "Eduardo & Lavínia",
   keywords: [
-    "chá de panela",
-    "Eduardo e Lavínia",
-    "lista de presentes",
     "casamento",
+    "Eduardo e Lavínia",
+    "convite de casamento",
+    "lista de presentes",
     "presente de casamento",
   ],
   alternates: {

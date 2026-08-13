@@ -44,14 +44,14 @@ export function Hero() {
           className="animate-fade-up mt-0 flex w-full max-w-md flex-col items-center"
           style={{ animationDelay: "0.25s" }}
         >
-          <p className="script-title">Chá de Panela</p>
+          <p className="script-title">Nosso Casamento</p>
           <p className="section-lead mt-3 max-w-sm">
-            Cada carinho, no valor que o coração mandar, nos ajuda a montar o
-            lar onde começaremos juntos.
+            Aqui celebramos o nosso sim: convite, memórias e carinhos que nos
+            ajudam a começar a vida a dois.
           </p>
           <div className="mt-6">
             <a href="#presentes" className="btn-primary">
-              Presentear o casal
+              Celebrar conosco
             </a>
           </div>
         </div>
