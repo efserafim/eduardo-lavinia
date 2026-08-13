@@ -18,7 +18,7 @@ const greatVibes = Great_Vibes({
 const outfit = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  display: "swap",
 });
 
 const siteUrl =
