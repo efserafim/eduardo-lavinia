@@ -29,6 +29,7 @@ type Photo = {
   id: string;
   url: string;
   caption: string | null;
+  sortOrder?: number;
 };
 
 type Tab = "resumo" | "presentes" | "galeria" | "doacoes";
@@ -91,6 +92,13 @@ export function AdminDashboard({
 
   const [caption, setCaption] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [editingPhotoId, setEditingPhotoId] = useState<string | null>(null);
+  const [editPhotoCaption, setEditPhotoCaption] = useState("");
+  const [photoSaving, setPhotoSaving] = useState(false);
+  const [photoMovingId, setPhotoMovingId] = useState<string | null>(null);
+  const [galleryImageUploadingId, setGalleryImageUploadingId] = useState<
+    string | null
+  >(null);
   const [donationFilter, setDonationFilter] = useState<
     "all" | "paid" | "pending" | "cancelled"
   >("all");
@@ -302,9 +310,133 @@ export function AdminDashboard({
   }
 
   async function deletePhoto(id: string) {
-    if (!confirm("Remover esta foto?")) return;
+    if (!confirm("Remover este card da galeria?")) return;
     await fetch(`/api/photos?id=${id}`, { method: "DELETE" });
-    setMessage("Foto removida.");
+    setMessage("Card removido da galeria.");
+    if (editingPhotoId === id) {
+      setEditingPhotoId(null);
+      setEditPhotoCaption("");
+    }
+    await refresh();
+  }
+
+  async function clearGalleryPhoto(id: string) {
+    if (!confirm("Remover somente a imagem? A legenda e a posição serão mantidas.")) {
+      return;
+    }
+    setGalleryImageUploadingId(id);
+    const res = await fetch("/api/photos", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, url: "" }),
+    });
+    setGalleryImageUploadingId(null);
+    if (!res.ok) {
+      const data = await res.json();
+      setMessage(data.error || "Erro ao remover a imagem.");
+      return;
+    }
+    setMessage("Imagem removida. O card foi mantido.");
+    await refresh();
+  }
+
+  function startEditPhoto(photo: Photo) {
+    setEditingPhotoId(photo.id);
+    setEditPhotoCaption(photo.caption || "");
+  }
+
+  function cancelEditPhoto() {
+    setEditingPhotoId(null);
+    setEditPhotoCaption("");
+  }
+
+  async function savePhotoCaption(e: React.FormEvent) {
+    e.preventDefault();
+    if (!editingPhotoId) return;
+    setPhotoSaving(true);
+    const res = await fetch("/api/photos", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: editingPhotoId,
+        caption: editPhotoCaption,
+      }),
+    });
+    setPhotoSaving(false);
+    if (!res.ok) {
+      const data = await res.json();
+      setMessage(data.error || "Erro ao salvar legenda.");
+      return;
+    }
+    setMessage("Legenda atualizada.");
+    cancelEditPhoto();
+    await refresh();
+  }
+
+  async function movePhoto(id: string, direction: "up" | "down") {
+    const index = photos.findIndex((photo) => photo.id === id);
+    if (index < 0) return;
+    const target = direction === "up" ? index - 1 : index + 1;
+    if (target < 0 || target >= photos.length) return;
+
+    const next = [...photos];
+    const [item] = next.splice(index, 1);
+    next.splice(target, 0, item);
+    const orderedIds = next.map((photo) => photo.id);
+
+    setPhotos(next);
+    setPhotoMovingId(id);
+    const res = await fetch("/api/photos", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ orderedIds }),
+    });
+    setPhotoMovingId(null);
+
+    if (!res.ok) {
+      const data = await res.json();
+      setMessage(data.error || "Erro ao reordenar.");
+      await refresh();
+      return;
+    }
+
+    const data = await res.json();
+    if (data.photos) setPhotos(data.photos);
+    setMessage("Posição da foto atualizada.");
+  }
+
+  async function replaceGalleryPhoto(id: string, file: File | null) {
+    if (!file) return;
+    setGalleryImageUploadingId(id);
+    const fd = new FormData();
+    fd.append("id", id);
+    fd.append("file", file);
+    const res = await fetch("/api/photos", { method: "PATCH", body: fd });
+    setGalleryImageUploadingId(null);
+    if (!res.ok) {
+      const data = await res.json();
+      setMessage(data.error || "Erro ao trocar a foto.");
+      return;
+    }
+    setMessage("Foto atualizada.");
+    await refresh();
+  }
+
+  async function clearPhotoCaption(id: string) {
+    setPhotoSaving(true);
+    const res = await fetch("/api/photos", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, caption: null }),
+    });
+    setPhotoSaving(false);
+    if (!res.ok) {
+      const data = await res.json();
+      setMessage(data.error || "Erro ao limpar legenda.");
+      return;
+    }
+    setMessage("Legenda removida.");
+    cancelEditPhoto();
     await refresh();
   }
 
@@ -925,7 +1057,8 @@ export function AdminDashboard({
                 Galeria
               </h2>
               <p className="mt-1 text-sm text-ink-faint">
-                Fotos exibidas na página inicial
+                Fotos da página inicial. Use as setas para mudar a ordem e
+                Editar para a legenda.
               </p>
             </div>
 
@@ -973,25 +1106,162 @@ export function AdminDashboard({
               </p>
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-                {photos.map((photo) => (
+                {photos.map((photo, index) => (
                   <figure key={photo.id} className="photo-frame group">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={photo.url}
-                      alt={photo.caption || ""}
-                      className="aspect-[3/4] w-full object-cover"
-                    />
-                    <figcaption className="relative z-10 mt-3 flex items-start justify-between gap-2 text-xs text-ink-faint">
-                      <span className="line-clamp-2">
-                        {photo.caption || "Sem legenda"}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => deletePhoto(photo.id)}
-                        className="shrink-0 font-display text-sm text-marsala opacity-80 transition group-hover:opacity-100"
-                      >
-                        Remover
-                      </button>
+                    <div className="aspect-[3/4] w-full overflow-hidden bg-cream">
+                      {photo.url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={photo.url}
+                          alt={photo.caption || ""}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full flex-col items-center justify-center px-4 text-center">
+                          <span className="font-script text-4xl text-marsala/25">
+                            E&L
+                          </span>
+                          <span className="mt-2 font-display text-sm text-ink-faint">
+                            Sem imagem
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <figcaption className="relative z-10 mt-3 space-y-3 text-xs text-ink-faint">
+                      {editingPhotoId === photo.id ? (
+                        <form
+                          onSubmit={savePhotoCaption}
+                          className="space-y-2"
+                        >
+                          <label className="sr-only" htmlFor={`caption-${photo.id}`}>
+                            Legenda
+                          </label>
+                          <input
+                            id={`caption-${photo.id}`}
+                            className="field !py-2 text-sm"
+                            value={editPhotoCaption}
+                            onChange={(e) => setEditPhotoCaption(e.target.value)}
+                            placeholder="Legenda"
+                            autoFocus
+                          />
+                          <div className="flex flex-wrap gap-2">
+                            <button
+                              type="submit"
+                              className="btn-primary !min-h-0 !px-3 !py-1.5 text-sm"
+                              disabled={photoSaving}
+                            >
+                              {photoSaving ? "Salvando…" : "Salvar"}
+                            </button>
+                            {photo.caption ? (
+                              <button
+                                type="button"
+                                className="btn-ghost !min-h-0 !px-3 !py-1.5 text-sm"
+                                onClick={() => clearPhotoCaption(photo.id)}
+                                disabled={photoSaving}
+                              >
+                                Limpar legenda
+                              </button>
+                            ) : null}
+                            <button
+                              type="button"
+                              className="btn-ghost !min-h-0 !px-3 !py-1.5 text-sm"
+                              onClick={cancelEditPhoto}
+                              disabled={photoSaving}
+                            >
+                              Cancelar
+                            </button>
+                          </div>
+                        </form>
+                      ) : (
+                        <div className="flex items-start justify-between gap-2">
+                          <span className="line-clamp-3 font-display text-sm leading-snug text-ink-soft">
+                            {photo.caption || "Sem legenda"}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => startEditPhoto(photo)}
+                            className="shrink-0 font-display text-sm text-marsala opacity-80 transition group-hover:opacity-100"
+                          >
+                            Editar
+                          </button>
+                        </div>
+                      )}
+
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[var(--line)] pt-2">
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            className="btn-chip !min-w-9 disabled:opacity-35"
+                            onClick={() => movePhoto(photo.id, "up")}
+                            disabled={
+                              index === 0 || photoMovingId === photo.id
+                            }
+                            aria-label="Mover para a esquerda"
+                            title="Mover para a esquerda"
+                          >
+                            ‹
+                          </button>
+                          <span className="font-display text-sm text-ink-faint">
+                            {index + 1}/{photos.length}
+                          </span>
+                          <button
+                            type="button"
+                            className="btn-chip !min-w-9 disabled:opacity-35"
+                            onClick={() => movePhoto(photo.id, "down")}
+                            disabled={
+                              index === photos.length - 1 ||
+                              photoMovingId === photo.id
+                            }
+                            aria-label="Mover para a direita"
+                            title="Mover para a direita"
+                          >
+                            ›
+                          </button>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <label
+                            className={`cursor-pointer font-display text-sm text-marsala/80 transition hover:text-marsala ${
+                              galleryImageUploadingId === photo.id
+                                ? "pointer-events-none opacity-50"
+                                : ""
+                            }`}
+                          >
+                            {galleryImageUploadingId === photo.id
+                              ? "Enviando…"
+                              : photo.url
+                                ? "Trocar foto"
+                                : "Adicionar foto"}
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              disabled={galleryImageUploadingId === photo.id}
+                              onChange={(e) => {
+                                const file = e.target.files?.[0] || null;
+                                e.target.value = "";
+                                void replaceGalleryPhoto(photo.id, file);
+                              }}
+                            />
+                          </label>
+                          {photo.url ? (
+                            <button
+                              type="button"
+                              onClick={() => clearGalleryPhoto(photo.id)}
+                              disabled={galleryImageUploadingId === photo.id}
+                              className="font-display text-sm text-marsala/80 transition hover:text-marsala disabled:opacity-50"
+                            >
+                              Remover foto
+                            </button>
+                          ) : null}
+                          <button
+                            type="button"
+                            onClick={() => deletePhoto(photo.id)}
+                            className="font-display text-sm text-ink-faint transition hover:text-marsala"
+                          >
+                            Excluir card
+                          </button>
+                        </div>
+                      </div>
                     </figcaption>
                   </figure>
                 ))}

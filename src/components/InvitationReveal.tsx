@@ -118,10 +118,10 @@ export function InvitationReveal() {
 
         <span className="invite-front" aria-hidden={phase !== "closed"}>
           <span className="invite-front-ornament invite-front-ornament--top" />
-          <span className="invite-front-eyebrow">Vocês estão convidados</span>
+          <span className="invite-front-eyebrow">Convidam</span>
           <span className="invite-front-names">Eduardo & Lavínia</span>
           <span className="invite-front-rule" />
-          <span className="invite-front-lead">Nosso Casamento</span>
+          <span className="invite-front-lead">para o casamento</span>
           <span className="invite-front-ornament invite-front-ornament--bottom" />
         </span>
 
